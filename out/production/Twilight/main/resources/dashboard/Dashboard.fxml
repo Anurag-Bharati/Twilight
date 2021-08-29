@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootStage" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.DashboardController">
+   <children>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="700.0" style="-fx-background-color: transparent; -fx-background-radius: 1em;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="394.0" prefWidth="700.0" style="-fx-background-color: #1F2833;" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.600000000000023">
+               <children>
+                  <ImageView fx:id="imageView" fitHeight="394.0" fitWidth="700.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 60%;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <viewport>
+                        <Rectangle2D height="1080.0" width="1920.0" />
+                     </viewport>
+                     <effect>
+                        <GaussianBlur radius="4.0" />
+                     </effect>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="-2.0" layoutY="-2.0" minWidth="100.0" prefHeight="32.0" prefWidth="704.0" style="-fx-background-color: #362c28; -fx-background-radius: .25em;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="702.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <JFXButton fx:id="MINIMIZE" alignment="CENTER" contentDisplay="CENTER" minHeight="0.0" minWidth="0.0" onAction="#eventHandler" prefHeight="15.0" prefWidth="25.0" ripplerFill="#fff1bd" style="-fx-background-color: #F6D55C;" text=" " textAlignment="CENTER" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="EXIT" minHeight="0.0" minWidth="0.0" onAction="#eventHandler" prefHeight="15.0" prefWidth="26.0" ripplerFill="#ffafa4" style="-fx-background-color: #ED553B;" text=" " textAlignment="CENTER" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+               <effect>
+                  <DropShadow height="10.5" offsetY="3.0" radius="4.625" width="10.0">
+                     <color>
+                        <Color opacity="0.8413793444633484" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </AnchorPane>
+            <AnchorPane prefHeight="77.6" prefWidth="708.0" style="-fx-background-radius: .5em .5em .9em .9em; -fx-background-color: white;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0">
+               <effect>
+                  <DropShadow height="30.37" offsetY="-2.0" radius="13.342500000000001" spread="0.13" width="25.0">
+                     <color>
+                        <Color opacity="0.9724138379096985" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </AnchorPane>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>
