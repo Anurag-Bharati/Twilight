@@ -3,12 +3,17 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="rootStage" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.DashboardController">
@@ -25,6 +30,54 @@
                         <GaussianBlur radius="4.0" />
                      </effect>
                   </ImageView>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <AnchorPane layoutX="245.0" onInputMethodTextChanged="#enableSearch" prefHeight="394.0" prefWidth="455.0" style="-fx-background-color: black; -fx-opacity: 50%;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <effect>
+                              <Blend mode="OVERLAY" />
+                           </effect></AnchorPane>
+                        <VBox layoutX="25.0" layoutY="25.0" prefHeight="344.4" prefWidth="250.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="426.0" AnchorPane.topAnchor="25.0">
+                           <children>
+                              <AnchorPane prefHeight="345.0" prefWidth="254.0">
+                                 <children>
+                                    <HBox prefHeight="34.0" prefWidth="250.0">
+                                       <children>
+                                          <Label prefHeight="35.0" prefWidth="78.0" text="HELLO" textFill="#ff8989">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="name" prefHeight="36.0" prefWidth="168.0" text="ANURAG" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Label layoutX="2.0" layoutY="27.0" prefHeight="27.0" prefWidth="251.0" text="Welcome Back!" textFill="WHITE">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="searchBar" alignment="CENTER" focusTraversable="false" layoutX="50.0" layoutY="146.0" onKeyPressed="#enableSearch" onMouseEntered="#enableSearch" onMouseExited="#enableSearch" prefWidth="149.0" promptText="Your City Name Here" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white; -fx-text-inner-color: white;" AnchorPane.bottomAnchor="172.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="146.0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <JFXButton fx:id="SEARCH" disable="true" layoutX="79.0" layoutY="188.0" prefHeight="27.0" prefWidth="93.0" ripplerFill="#9bec89" style="-fx-background-color: #63c74d;" text="Search" textFill="WHITE" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="79.0" AnchorPane.topAnchor="188.0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="-2.0" layoutY="-2.0" minWidth="100.0" prefHeight="32.0" prefWidth="704.0" style="-fx-background-color: #362c28; -fx-background-radius: .25em;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
@@ -49,6 +102,15 @@
                         </JFXButton>
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER" prefHeight="32.0" prefWidth="70.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="325.0" AnchorPane.rightAnchor="309.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Circle fx:id="circle1" fill="#76ff1f" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Circle fx:id="circle2" fill="#1fff93" layoutX="40.0" layoutY="26.0" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Circle fx:id="circle3" fill="#1fffab" layoutX="45.0" layoutY="26.0" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Circle fx:id="circle4" fill="#1fffe1" layoutX="50.0" layoutY="26.0" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Circle fx:id="circle5" fill="#21b3ff" layoutX="55.0" layoutY="26.0" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" />
+                     </children>
+                  </HBox>
                </children>
                <effect>
                   <DropShadow height="10.5" offsetY="3.0" radius="4.625" width="10.0">
@@ -58,7 +120,7 @@
                   </DropShadow>
                </effect>
             </AnchorPane>
-            <AnchorPane prefHeight="77.6" prefWidth="708.0" style="-fx-background-radius: .5em .5em .9em .9em; -fx-background-color: white;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0">
+            <AnchorPane prefHeight="81.0" prefWidth="708.0" style="-fx-background-radius: .5em .5em .9em .9em; -fx-background-color: white;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0">
                <effect>
                   <DropShadow height="30.37" offsetY="-2.0" radius="13.342500000000001" spread="0.13" width="25.0">
                      <color>
@@ -66,6 +128,36 @@
                      </color>
                   </DropShadow>
                </effect>
+               <children>
+                  <AnchorPane layoutX="6.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="71.0" prefWidth="173.0" style="-fx-background-color: white; -fx-background-radius: .5em .5em .9em .5em; -fx-border-color: transparent; -fx-border-radius: .5em .5em .9em .9em; -fx-border-width: 2; -fx-opacity: 100%;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <Label fx:id="day" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="31.0" prefHeight="44.0" prefWidth="76.0" text="N/A" textFill="#151515" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="29.0">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Label>
+                        <Label fx:id="time" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="9.0" prefHeight="40.0" prefWidth="149.0" text="00:00:00 AM" textFill="#2b2b2b" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="5.0">
+                           <font>
+                              <Font name="System Bold" size="23.7" />
+                           </font>
+                        </Label>
+                        <Label fx:id="date" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="83.0" layoutY="30.0" prefHeight="30.0" prefWidth="78.0" text="N/A 00" textFill="#ff5353" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="11.599999999999994" AnchorPane.topAnchor="32.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Label>
+                     </children>
+                     <effect>
+                        <DropShadow height="10.0" radius="4.5" width="10.0" />
+                     </effect>
+                  </AnchorPane>
+               </children>
             </AnchorPane>
          </children></AnchorPane>
    </children>

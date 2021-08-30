@@ -1,19 +1,37 @@
 package main.test;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 
-import java.io.File;
-import java.util.Objects;
+import java.util.Scanner;
 
 public class Test1 {
     private static Image[] images;
 
     public static void main(String[] args) {
-        int filesTotal = Objects.requireNonNull(new File("src/main/resources/Images").listFiles()).length;
-        for(int i=0; i<filesTotal;i++){
+        Scanner input = new Scanner(System.in);
 
-            images[i] = new Image("main/resources/Images/"+i+".jpg");
-        }
-        System.out.println(images.length);
+        Task<Void> task = new Task<Void>() {
+
+            @Override
+            protected Void call() {
+                while (true) {
+                    String userInput = input.nextLine();
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println(userInput);
+                        }
+                    });
+
+                }
+            }
+        };
+
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
     }
 }
