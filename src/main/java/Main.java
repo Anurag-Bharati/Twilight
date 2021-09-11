@@ -1,3 +1,4 @@
+import Manager.ResizeHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ public class Main extends Application implements Initializable {
     public static Scene scene;
     static double  xOffset, yOffset;
     Parent root;
+
     String dashboard = "main/resources/dashboard/Dashboard.fxml";
     String signup = "main/resources/LoginSignUp/LoginSignUp.fxml";
 
@@ -32,13 +34,14 @@ public class Main extends Application implements Initializable {
         try{
             //https://stackoverflow.com/questions/61531317/how-do-i-determine-the-correct-path-for-fxml-files-css-files-images-and-other
             root = FXMLLoader.load(Objects.requireNonNull(
-                    getClass().getClassLoader().getResource(dashboard)));
-
+                    getClass().getClassLoader().getResource(signup)));
             scene = new Scene(root);
             stage.initStyle(StageStyle.TRANSPARENT);
             scene.setFill(Color.TRANSPARENT);
-            stageDragable(root,stage);
             stage.setScene(scene);
+            if (root.getId().equals("rootStage")){
+                ResizeHelper.addResizeListener(stage);
+            }else stageDragable(root,stage);
             stage.show();
 
         }
