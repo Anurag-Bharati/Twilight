@@ -8,6 +8,7 @@
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -16,11 +17,11 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootStage" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.DashboardController">
+<AnchorPane fx:id="rootStage" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Dashboard.DashboardController">
    <children>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="700.0" style="-fx-background-color: transparent; -fx-background-radius: 1em;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
          <children>
-            <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="394.0" prefWidth="700.0" style="-fx-background-color: #1F2833;" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.600000000000023">
+            <AnchorPane fx:id="rootFx" nodeOrientation="LEFT_TO_RIGHT" prefHeight="394.0" prefWidth="700.0" style="-fx-background-color: #1F2833;" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
                   <ImageView fx:id="imageView" fitHeight="394.0" fitWidth="700.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 60%;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <viewport>
@@ -32,13 +33,138 @@
                   </ImageView>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane layoutX="245.0" onInputMethodTextChanged="#enableSearch" prefHeight="394.0" prefWidth="455.0" style="-fx-background-color: black; -fx-opacity: 50%;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutX="245.0" onInputMethodTextChanged="#enableSearch" onMouseClicked="#focusBackground" prefHeight="394.0" prefWidth="455.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <effect>
                               <Blend mode="OVERLAY" />
-                           </effect></AnchorPane>
+                           </effect>
+                           <children>
+                              <AnchorPane fx:id="tempFx" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black; -fx-opacity: 30%;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <VBox prefHeight="374.0" prefWidth="400.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <AnchorPane prefHeight="113.0" prefWidth="400.0">
+                                       <children>
+                                          <Label fx:id="city" alignment="CENTER" blendMode="ADD" cache="true" cacheHint="QUALITY" prefHeight="66.0" prefWidth="398.0" text="CITYNAME" textFill="WHITE" AnchorPane.topAnchor="10.0">
+                                             <font>
+                                                <Font name="System Bold" size="40.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="country" alignment="CENTER" blendMode="ADD" cache="true" cacheHint="QUALITY" layoutX="1.0" layoutY="53.0" prefHeight="27.0" prefWidth="398.0" text="NA" textFill="WHITE" AnchorPane.topAnchor="60.0">
+                                             <font>
+                                                <Font size="23.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="110.0" prefHeight="150.0" prefWidth="0.0" spacing="20.0">
+                                       <children>
+                                          <VBox alignment="TOP_CENTER" prefHeight="214.0" prefWidth="308.0">
+                                             <children>
+                                                <ImageView fx:id="weatherIcon" cache="true" cacheHint="QUALITY" fitHeight="117.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
+                                                   <viewport>
+                                                      <Rectangle2D height="500.0" width="500.0" />
+                                                   </viewport>
+                                                   <image>
+                                                      <Image url="@../icons/11.png" />
+                                                   </image>
+                                                   <effect>
+                                                      <DropShadow height="10.0" radius="4.5" width="10.0">
+                                                         <color>
+                                                            <Color red="0.2210526317358017" green="0.2210526317358017" blue="0.2210526317358017" />
+                                                         </color>
+                                                      </DropShadow>
+                                                   </effect>
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                </ImageView>
+                                                <Label fx:id="temperature" alignment="TOP_CENTER" blendMode="ADD" cache="true" cacheHint="QUALITY" prefHeight="64.0" prefWidth="179.0" text="00°C" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="System Bold" size="43.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="desc" alignment="TOP_CENTER" blendMode="ADD" cache="true" cacheHint="QUALITY" prefHeight="22.0" prefWidth="199.0" text="N/A" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="System Bold" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <HBox prefHeight="214.0" prefWidth="270.0">
+                                             <children>
+                                                <VBox alignment="CENTER" prefHeight="150.0" prefWidth="64.0" spacing="6.0">
+                                                   <children>
+                                                      <ImageView cache="true" cacheHint="SCALE" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                         <viewport>
+                                                            <Rectangle2D height="64.0" width="64.0" />
+                                                         </viewport>
+                                                         <image>
+                                                            <Image url="@../icons/cloudiness.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView cache="true" cacheHint="SCALE" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                                         <viewport>
+                                                            <Rectangle2D height="64.0" width="64.0" />
+                                                         </viewport>
+                                                         <image>
+                                                            <Image url="@../icons/windspeed.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView cache="true" cacheHint="SCALE" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+                                                         <viewport>
+                                                            <Rectangle2D height="64.0" width="64.0" />
+                                                         </viewport>
+                                                         <image>
+                                                            <Image url="@../icons/pressure.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView cache="true" cacheHint="SCALE" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+                                                         <viewport>
+                                                            <Rectangle2D height="64.0" width="64.0" />
+                                                         </viewport>
+                                                         <image>
+                                                            <Image url="@../icons/humidity.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </VBox>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="6.0">
+                                                   <children>
+                                                      <Label fx:id="cloudiness" prefHeight="30.0" prefWidth="100.0" text="N/A" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="System Bold" size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label fx:id="windSpeed" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="100.0" text="N/A" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="System Bold" size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label fx:id="pressure" layoutX="10.0" layoutY="47.0" prefHeight="30.0" prefWidth="100.0" text="N/A" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="System Bold" size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label fx:id="humidity" layoutX="10.0" layoutY="84.0" prefHeight="30.0" prefWidth="100.0" text="N/A" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="System Bold" size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="210.0" prefHeight="72.0" prefWidth="400.0" />
+                                 </children>
+                              </VBox>
+                           </children></AnchorPane>
                         <VBox layoutX="25.0" layoutY="25.0" prefHeight="344.4" prefWidth="250.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="426.0" AnchorPane.topAnchor="25.0">
                            <children>
-                              <AnchorPane prefHeight="345.0" prefWidth="254.0">
+                              <AnchorPane onMouseClicked="#focusBackground" prefHeight="345.0" prefWidth="254.0">
                                  <children>
                                     <HBox prefHeight="34.0" prefWidth="250.0">
                                        <children>
@@ -67,7 +193,7 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </TextField>
-                                    <JFXButton fx:id="SEARCH" disable="true" layoutX="79.0" layoutY="188.0" prefHeight="27.0" prefWidth="93.0" ripplerFill="#9bec89" style="-fx-background-color: #63c74d;" text="Search" textFill="WHITE" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="79.0" AnchorPane.topAnchor="188.0">
+                                    <JFXButton fx:id="searchButton" disable="true" layoutX="79.0" layoutY="188.0" onAction="#onSearch" prefHeight="27.0" prefWidth="93.0" ripplerFill="#9bec89" style="-fx-background-color: #63c74d;" text="Search" textFill="WHITE" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="79.0" AnchorPane.topAnchor="188.0">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
@@ -82,7 +208,7 @@
             </AnchorPane>
             <AnchorPane layoutX="-2.0" layoutY="-2.0" minWidth="100.0" prefHeight="32.0" prefWidth="704.0" style="-fx-background-color: #362c28; -fx-background-radius: .25em;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="-2.0">
                <children>
-                  <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="702.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#focusBackground" prefHeight="30.0" prefWidth="702.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <JFXButton fx:id="MINIMIZE" alignment="CENTER" contentDisplay="CENTER" minHeight="0.0" minWidth="0.0" onAction="#eventHandler" prefHeight="15.0" prefWidth="25.0" ripplerFill="#fff1bd" style="-fx-background-color: #F6D55C;" text=" " textAlignment="CENTER" textFill="WHITE">
                            <HBox.margin>
@@ -120,7 +246,7 @@
                   </DropShadow>
                </effect>
             </AnchorPane>
-            <AnchorPane prefHeight="81.0" prefWidth="708.0" style="-fx-background-radius: .5em .5em .9em .9em; -fx-background-color: white;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0">
+            <AnchorPane onMouseClicked="#focusBackground" prefHeight="85.0" prefWidth="708.0" style="-fx-background-radius: .5em .5em .9em .9em; -fx-background-color: white;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0">
                <effect>
                   <DropShadow height="30.37" offsetY="-2.0" radius="13.342500000000001" spread="0.13" width="25.0">
                      <color>
@@ -131,28 +257,50 @@
                <children>
                   <AnchorPane layoutX="6.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="71.0" prefWidth="173.0" style="-fx-background-color: white; -fx-background-radius: .5em .5em .9em .5em; -fx-border-color: transparent; -fx-border-radius: .5em .5em .9em .9em; -fx-border-width: 2; -fx-opacity: 100%;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <children>
-                        <Label fx:id="day" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="31.0" prefHeight="44.0" prefWidth="76.0" text="N/A" textFill="#151515" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="29.0">
-                           <font>
-                              <Font name="System Bold" size="28.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Label>
-                        <Label fx:id="time" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="9.0" prefHeight="40.0" prefWidth="149.0" text="00:00:00 AM" textFill="#2b2b2b" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="5.0">
+                        <VBox alignment="CENTER" layoutX="4.0" layoutY="4.0" prefHeight="71.0" prefWidth="324.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
+                           <children>
+                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="170.0">
+                                 <children>
+                                    <Label fx:id="day" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="66.0" text="N/A" textFill="#151515">
+                                       <font>
+                                          <Font name="System Bold" size="26.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <HBox.margin>
+                                          <Insets top="-2.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="date" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="11.0" prefWidth="76.0" text="N/A 00" textFill="#ff5353">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="32.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Label fx:id="time" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="148.0" text="00:00:00 AM" textFill="#2b2b2b" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="12.5" AnchorPane.rightAnchor="12.5">
                            <font>
                               <Font name="System Bold" size="23.7" />
                            </font>
                         </Label>
-                        <Label fx:id="date" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="83.0" layoutY="30.0" prefHeight="30.0" prefWidth="78.0" text="N/A 00" textFill="#ff5353" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="11.599999999999994" AnchorPane.topAnchor="32.0">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </Label>
                      </children>
+                     <effect>
+                        <DropShadow height="10.0" radius="4.5" width="10.0" />
+                     </effect>
+                  </AnchorPane>
+                  <AnchorPane layoutX="205.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="77.0" prefWidth="514.0" style="-fx-background-color: white; -fx-background-radius: .5em .5em .9em .5em; -fx-border-color: transparent; -fx-border-radius: .5em .5em .9em .9em; -fx-border-width: 2; -fx-opacity: 100%;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <effect>
                         <DropShadow height="10.0" radius="4.5" width="10.0" />
                      </effect>

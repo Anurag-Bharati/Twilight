@@ -11,12 +11,19 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ *
+ * @author Anurag Bharati
+ *
+ */
 
 public class Main extends Application implements Initializable {
 
     public static Scene scene;
     static double  xOffset, yOffset;
     Parent root;
+    String dashboard = "main/resources/dashboard/Dashboard.fxml";
+    String signup = "main/resources/LoginSignUp/LoginSignUp.fxml";
 
     @Override
     public void start(Stage stage){
@@ -25,7 +32,7 @@ public class Main extends Application implements Initializable {
         try{
             //https://stackoverflow.com/questions/61531317/how-do-i-determine-the-correct-path-for-fxml-files-css-files-images-and-other
             root = FXMLLoader.load(Objects.requireNonNull(
-                    getClass().getClassLoader().getResource("main/resources/dashboard/Dashboard.fxml")));
+                    getClass().getClassLoader().getResource(dashboard)));
 
             scene = new Scene(root);
             stage.initStyle(StageStyle.TRANSPARENT);
