@@ -1,6 +1,7 @@
 package LoginSignUp;
 
 import Dashboard.User;
+import Manager.MailVerify;
 import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
@@ -9,6 +10,7 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +29,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -43,20 +46,31 @@ public class SignUpController2 implements Initializable {
     public Parent root;
     User user;
 
-    @FXML protected AnchorPane rootStage;
-    @FXML private AnchorPane rootFx;
-    @FXML private JFXButton Quit;
-    @FXML private JFXButton Minimize;
-    @FXML private JFXButton Expand;
+    @FXML
+    protected AnchorPane rootStage;
+    @FXML
+    private AnchorPane rootFx;
+    @FXML
+    private JFXButton Quit;
+    @FXML
+    private JFXButton Minimize;
+    @FXML
+    private JFXButton Expand;
 
-    @FXML private Button back;
-    @FXML private JFXButton register;
+    @FXML
+    private Button back;
+    @FXML
+    private JFXButton register;
 
-    @FXML private Label errorLabel;
+    @FXML
+    private Label errorLabel;
 
-    @FXML private PasswordField passField;
-    @FXML private PasswordField confirmPassField;
-    @FXML private TextField authField;
+    @FXML
+    private PasswordField passField;
+    @FXML
+    private PasswordField confirmPassField;
+    @FXML
+    private TextField authField;
 
     private String givenName;
     private String familyName;
@@ -66,6 +80,7 @@ public class SignUpController2 implements Initializable {
     private String gmail;
     private String gmailOld;
     private Boolean sent = false;
+    String authCodeSys = String.valueOf(MailVerify.OTP);
 
     int screenWidth = 400;
     Random random = new Random();
@@ -74,16 +89,17 @@ public class SignUpController2 implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Rectangle[] r = new Rectangle[100];
         for (int i = 0; i < 100; i++) {
-            r[i] = new Rectangle(1, random.nextInt(20),5,5);
+            r[i] = new Rectangle(1, random.nextInt(20), 5, 5);
             Color color = Color.rgb(255, 255, 255, random.nextDouble());
             r[i].setFill(color);
             rootFx.getChildren().add(r[i]);
             Raining(r[i]);
         }
     }
+
     private void Raining(Rectangle r) {
-        if ((int)rootFx.getHeight()!=0){
-            screenWidth = (int)rootFx.getWidth();
+        if ((int) rootFx.getHeight() != 0) {
+            screenWidth = (int) rootFx.getWidth();
         }
         r.setX(random.nextInt(screenWidth));
         int time = 2 + random.nextInt(2);
@@ -94,8 +110,9 @@ public class SignUpController2 implements Initializable {
         walk.setOnFinished(t -> Raining(r));
         walk.play();
     }
+
     @FXML
-    private void onAction(ActionEvent actionEvent){
+    private void onAction(ActionEvent actionEvent) throws IOException {
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         if (actionEvent.getSource().equals(Quit)) {
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(.4), rootStage);
@@ -121,27 +138,132 @@ public class SignUpController2 implements Initializable {
                 System.exit(0);
             });
         }
-        if (actionEvent.getSource().equals(Minimize)){
+        if (actionEvent.getSource().equals(Minimize)) {
             stage.setIconified(!stage.isIconified());
         }
-        if (actionEvent.getSource().equals(Expand)){
+        if (actionEvent.getSource().equals(Expand)) {
             stage.setMaximized(!stage.isMaximized());
         }
+        if (actionEvent.getSource().equals(back)) {
+            switchToSignUp(actionEvent);
+        }
+        if (actionEvent.getSource().equals(register)) {
+            onDone(actionEvent);
+        }
     }
+
     @FXML
-    public void switchToSignUp(ActionEvent event) throws IOException {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                    "../../resource/LoginSignUp/LoginSignUp1.fxml"));
-            root = fxmlLoader.load();
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            stage.setScene(scene);
-            ResizeHelper.addResizeListener(stage);
-            stage.show();
-        } catch (IOException e){
-            e.printStackTrace();
+    private void switchToSignUp(ActionEvent event) throws IOException {
+        user = new User();
+        user.setGivenName(givenName);
+        user.setFamilyName(familyName);
+        user.setGmail(gmail);
+        user.setGmailOld(gmailOld);
+        user.setSent(sent);
+        if (passField.getText().equals(confirmPassField.getText())) {
+            user.setPassword(passField.getText());
+            user.setConfirmPass(confirmPassField.getText());
+        }
+        user.setAuthCode(authField.getText());
+
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp.fxml"));
+        root = fxmlLoader.load();
+
+        SignUpController signUpController = fxmlLoader.getController();
+        signUpController.initUser(user);
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(false);
+        scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        stage.setScene(scene);
+        ResizeHelper.addResizeListener(stage);
+        stage.show();
+
+    }
+
+    public void initUser(User user) {
+
+        /*This method is used to pass object between scenes.*/
+        this.user = user;
+        this.givenName = user.getGivenName();
+        this.familyName = user.getFamilyName();
+        this.gmail = user.getGmail();
+        this.password = user.getPassword();
+        this.confirmPass = user.getConfirmPass();
+        this.authCode = user.getAuthCode();
+        this.sent = user.isSent();
+        this.gmailOld = user.getGmailOld();
+
+        if (password != null && password.equals(confirmPass)) {
+            passField.setText(password);
+            confirmPassField.setText(confirmPass);
+        }
+        if (authCode != null && authCode.strip().length() == authCodeSys.length()) {
+            authField.setText(authCode);
+        }
+    }
+
+    @FXML
+    private void switchToLogin(Event event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/Login.fxml"));
+        root = fxmlLoader.load();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        stage.setScene(scene);
+        ResizeHelper.addResizeListener(stage);
+        stage.show();
+    }
+
+    private boolean checkFieldsTwo() {
+
+        /*This checks for the password validity made totally by anurag :) at 12AM 8/27/2021 */
+
+        if ((Objects.requireNonNull(passField.getText()).length() >= 8)) {
+            if (passField.getText().equals(confirmPassField.getText())) {
+                if (checkPasswordStrength(passField.getText())) {
+                    return true;
+                } else errorLabel.setText("Password must contain at least one letter and number");
+                return false;
+            } else errorLabel.setText("Password does not match on both fields");
+            return false;
+
+        } else errorLabel.setText("Password must be at least 8 character long");
+        return false;
+    }
+
+    private boolean checkPasswordStrength(String password) {
+
+        /* This is the password strength checker*/
+
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+        for (int i = 0; i < password.length(); i++) {
+            char x = password.charAt(i);
+            if (Character.isLetter(x)) {
+                hasLetter = true;
+            }
+            if (Character.isDigit(x)) {
+                hasDigit = true;
+            }
+            if (hasDigit && hasLetter) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @FXML
+    private void onDone(ActionEvent actionEvent) {
+        if (checkFieldsTwo()) {
+            user.setPassword(passField.getText());
+            password = passField.getText();
+            confirmPass = confirmPassField.getText();
+            if (authField.getText().strip().equals(authCodeSys)) {
+                // TODO: 9/12/2021 Database Work
+            }else errorLabel.setText("Auth code does not match");
         }
     }
 }

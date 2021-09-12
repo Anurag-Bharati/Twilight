@@ -25,7 +25,7 @@ public class Main extends Application implements Initializable {
     Parent root;
 
     String dashboard = "main/resources/dashboard/Dashboard.fxml";
-    String signup = "main/resources/LoginSignUp/LoginSignUp2.fxml";
+    String signup = "main/resources/LoginSignUp/LoginSignUp.fxml";
 
     @Override
     public void start(Stage stage){

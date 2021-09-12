@@ -1,8 +1,10 @@
 package LoginSignUp;
 
 import Dashboard.User;
+import Manager.MailVerify;
 import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
+import com.sun.mail.util.MailConnectException;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
@@ -23,8 +25,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
@@ -94,7 +96,7 @@ public class SignUpController implements Initializable {
         walk.play();
     }
     @FXML
-    private void onAction(ActionEvent actionEvent){
+    private void onAction(ActionEvent actionEvent) throws Exception {
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         if (actionEvent.getSource().equals(Quit)) {
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(.4), rootStage);
@@ -126,10 +128,14 @@ public class SignUpController implements Initializable {
         if (actionEvent.getSource().equals(Expand)){
             stage.setMaximized(!stage.isMaximized());
         }
+        if (actionEvent.getSource().equals(next)){
+            switchToSignUpVer(actionEvent);
+        }
+//      errorLabel.setText("Tip: You can login directly as a guest by clicking the guest button by the minimize
+//       button");
     }
     @FXML
-    public void switchToSignUpVer(ActionEvent event) throws IOException {
-        errorLabel.setText("Tip: You can login directly as a guest by clicking the guest button by the minimize button");
+    private void switchToSignUpVer(ActionEvent event) throws Exception {
         errorLabel.setTextFill(Color.WHITE);
         if (checkGmail(gmailField.getText().toLowerCase(Locale.ROOT))) {
             if (checkFields()) {
@@ -138,20 +144,32 @@ public class SignUpController implements Initializable {
                 user.setFamilyName(familyNameField.getText());
                 user.setGmail(gmailField.getText().strip().toLowerCase(Locale.ROOT));
                 user.setGmailOld(gmailField.getText().strip().toLowerCase(Locale.ROOT));
+                user.setPassword(password);
+                user.setConfirmPass(confirmPass);
+                user.setAuthCode(authCode);
                 user.setSent(sent);
-
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                        "../../resource/LoginSignUp/LoginSignUp2.fxml"));
-                root = fxmlLoader.load();
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                scene.setFill(Color.TRANSPARENT);
-                stage.setScene(scene);
-                ResizeHelper.addResizeListener(stage);
-                stage.show();
+                if (sendIt(user.getGivenName(), user.getGmail().strip().toLowerCase(Locale.ROOT))) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+                            "/main/resources/LoginSignUp/LoginSignUp2.fxml"));
+                    root = fxmlLoader.load();
+                    SignUpController2 signUpController2 = fxmlLoader.getController();
+                    signUpController2.initUser(user);
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setMaximized(false);
+                    scene = new Scene(root);
+                    scene.setFill(Color.TRANSPARENT);
+                    stage.setScene(scene);
+                    ResizeHelper.addResizeListener(stage);
+                    stage.show();
+                } else {
+                    errorLabel.setText("Please connect to a network and then proceed");
+                    errorLabel.setTextFill(Color.web("#be4a2f"));
+                }
             }
+        } else {
+            errorLabel.setTextFill(Color.web("#f77622"));
+            errorLabel.setText("Please provide a gmail address");
         }
-
     }
     public boolean checkGmail(String gMail) {
 
@@ -176,6 +194,28 @@ public class SignUpController implements Initializable {
         }
         return false;
     }
+    private boolean sendIt(String name,String mail) throws Exception {
+
+        /*This method sends gmail to the provided address only if the user is connected to an internet */
+        if (!Objects.equals(gmailField.getText().strip(), gmailOld)){
+            user.setSent(false);
+            user.setGmailOld(gmailField.getText().strip());
+        }
+
+        if (!user.isSent()) {
+
+            try {
+                user.setSent(true);
+                MailVerify.sendMail(name, mail);
+                return true;
+
+            } catch (UnknownHostException | MailConnectException e) {
+                System.out.println("Please connect to a network and then proceed");
+                return false;
+            }
+        }
+        return true;
+    }
     public boolean checkFields() {
 
         /*This method check for data validity made totally by anurag :) at 12AM 8/27/2021 */
@@ -196,11 +236,12 @@ public class SignUpController implements Initializable {
         }else if (Objects.requireNonNull(gmailField.getText()).length() <= 10) {
             errorLabel.setText("Please, provide a valid gmail address");
             return false;
-        } else if (!errorLabel.getText().equals("All the requirements have been satisfied. Press Confirm to proceed" +
-                ".")){
+        } else if (!errorLabel.getText().equals(
+                "All the requirements have been satisfied. Press Confirm to proceed.")){
             errorLabel.setText("All the requirements have been satisfied. Press Confirm to proceed.");
             errorLabel.setTextFill(Color.web("#3e8948"));
             next.setText("CONFIRM");
+            System.out.println("Confirm");
             return false;
         } else return true;
     }

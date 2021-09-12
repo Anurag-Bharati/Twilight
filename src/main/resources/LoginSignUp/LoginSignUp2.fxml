@@ -97,7 +97,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <JFXButton fx:id="register" layoutX="169.0" layoutY="267.0" ripplerFill="#ade1a0" style="-fx-background-color: #63c74d;" text="Register" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="270.0">
+                        <JFXButton fx:id="register" layoutX="169.0" layoutY="267.0" onAction="#onAction" ripplerFill="#ade1a0" style="-fx-background-color: #63c74d;" text="Register" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="270.0">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
@@ -120,7 +120,7 @@
                               <Image url="@../back.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="back" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;" text=" " AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="30.0" />
+                        <Button fx:id="back" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAction" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;" text=" " AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="30.0" />
                         <PasswordField fx:id="passField" layoutX="57.0" layoutY="103.0" prefHeight="30.0" prefWidth="124.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0" />
                         <PasswordField fx:id="confirmPassField" layoutX="67.0" layoutY="113.0" prefHeight="30.0" prefWidth="124.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="160.0" />
                      </children>
