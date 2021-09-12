@@ -1,7 +1,6 @@
 package LoginSignUp;
 
 import Dashboard.User;
-import Manager.MailVerify;
 import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
@@ -17,9 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -28,7 +24,6 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -39,7 +34,7 @@ import java.util.ResourceBundle;
  *
  */
 
-public class SignUpController2 implements Initializable {
+public class SignUpController4 implements Initializable {
     protected Stage stage;
     protected Scene scene;
     public Parent root;
@@ -58,18 +53,6 @@ public class SignUpController2 implements Initializable {
 
     @FXML
     private Button back;
-    @FXML
-    private JFXButton next;
-
-    @FXML
-    private Label errorLabel;
-
-    @FXML
-    private PasswordField passField;
-    @FXML
-    private PasswordField confirmPassField;
-    @FXML
-    private TextField authField;
 
     private String givenName;
     private String familyName;
@@ -79,7 +62,6 @@ public class SignUpController2 implements Initializable {
     private String gmail;
     private String gmailOld;
     private Boolean sent = false;
-    String authCodeSys = String.valueOf(MailVerify.OTP);
 
     int screenWidth = 400;
     Random random = new Random();
@@ -148,9 +130,6 @@ public class SignUpController2 implements Initializable {
         if (actionEvent.getSource().equals(back)) {
             switchToSignUp(actionEvent);
         }
-        if (actionEvent.getSource().equals(next)) {
-            onDone(actionEvent);
-        }
     }
 
     @FXML
@@ -161,19 +140,18 @@ public class SignUpController2 implements Initializable {
         user.setGmail(gmail);
         user.setGmailOld(gmailOld);
         user.setSent(sent);
-        if (passField.getText().equals(confirmPassField.getText())) {
-            user.setPassword(passField.getText());
-            user.setConfirmPass(confirmPassField.getText());
-        }
-        user.setAuthCode(authField.getText());
+        user.setPassword(password);
+        user.setConfirmPass(confirmPass);
+        user.setAuthCode(authCode);
         user.setCountry(country);
         user.setCity(city);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp3.fxml"));
         root = fxmlLoader.load();
 
-        SignUpController signUpController = fxmlLoader.getController();
-        signUpController.initUser(user);
+        SignUpController3 signUpController3 = fxmlLoader.getController();
+        signUpController3.initUser(user);
 
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setMaximized(false);
@@ -197,96 +175,7 @@ public class SignUpController2 implements Initializable {
         this.authCode = user.getAuthCode();
         this.sent = user.isSent();
         this.gmailOld = user.getGmailOld();
-        if (user.getCountry() != null) {
-            this.country = user.getCountry();
-        }
-        if (user.getCity()!= null) {
-            this.city = user.getCity();
-        }
-
-        if (password != null && password.equals(confirmPass)) {
-            passField.setText(password);
-            confirmPassField.setText(confirmPass);
-        }
-        if (authCode != null && authCode.strip().length() == authCodeSys.length()) {
-            authField.setText(authCode);
-        }
-    }
-    private boolean checkFieldsTwo() {
-
-        /*This checks for the password validity made totally by anurag :) at 12AM 8/27/2021 */
-
-        if ((Objects.requireNonNull(passField.getText()).length() >= 8)) {
-            if (passField.getText().equals(confirmPassField.getText())) {
-                if (checkPasswordStrength(passField.getText())) {
-                    return true;
-                } else errorLabel.setText("Password must contain at least one letter and number");
-                return false;
-            } else errorLabel.setText("Password does not match on both fields");
-            return false;
-
-        } else errorLabel.setText("Password must be at least 8 character long");
-        return false;
-    }
-
-    private boolean checkPasswordStrength(String password) {
-
-        /* This is the password strength checker*/
-
-        boolean hasLetter = false;
-        boolean hasDigit = false;
-        for (int i = 0; i < password.length(); i++) {
-            char x = password.charAt(i);
-            if (Character.isLetter(x)) {
-                hasLetter = true;
-            }
-            if (Character.isDigit(x)) {
-                hasDigit = true;
-            }
-            if (hasDigit && hasLetter) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @FXML
-    private void onDone(ActionEvent actionEvent) throws IOException {
-        if (checkFieldsTwo()) {
-            user.setPassword(passField.getText());
-            password = passField.getText();
-            confirmPass = confirmPassField.getText();
-            if (authField.getText().strip().equals(authCodeSys)) {
-                switchToLast(actionEvent);
-            }else errorLabel.setText("Auth code does not match");
-        }
-    }
-    private void switchToLast(ActionEvent event) throws IOException {
-        user = new User();
-        user.setGivenName(givenName);
-        user.setFamilyName(familyName);
-        user.setGmail(gmail);
-        user.setGmailOld(gmailOld);
-        user.setSent(sent);
-        user.setPassword(passField.getText());
-        user.setConfirmPass(confirmPassField.getText());
-        user.setAuthCode(authField.getText());
-        user.setCountry(country);
-        user.setCity(city);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp3.fxml"));
-        root = fxmlLoader.load();
-
-        SignUpController3 signUpController3 = fxmlLoader.getController();
-        signUpController3.initUser(user);
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setMaximized(false);
-        scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
-        stage.setScene(scene);
-        ResizeHelper.addResizeListener(stage);
-        stage.show();
-
+        this.country = user.getCountry();
+        this.city = user.getCity();
     }
 }

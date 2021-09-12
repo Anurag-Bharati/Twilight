@@ -97,7 +97,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <JFXButton fx:id="register" layoutX="169.0" layoutY="267.0" onAction="#onAction" ripplerFill="#ade1a0" style="-fx-background-color: #63c74d;" text="Register" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="270.0">
+                        <JFXButton fx:id="next" layoutX="169.0" layoutY="267.0" onAction="#onAction" ripplerFill="#ade1a0" style="-fx-background-color: #63c74d;" text="Next" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="270.0">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>

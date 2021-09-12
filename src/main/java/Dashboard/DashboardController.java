@@ -52,7 +52,7 @@ public class DashboardController implements Initializable {
     @FXML private JFXButton searchButton;
 
 
-    @FXML private Label name;
+    @FXML public Label name;
     @FXML private Label time;
     @FXML private Label date;
     @FXML private Label day;

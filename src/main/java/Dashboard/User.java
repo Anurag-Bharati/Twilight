@@ -2,7 +2,7 @@ package Dashboard;
 
 public class User {
 
-    private String givenName, familyName, gmail, gmailOld, password,confirmPass, authCode;
+    private String givenName, familyName, gmail, country, city, gmailOld, password,confirmPass, authCode;
     private boolean sent;
 
 //    User(String firstName, String lastName, String gmail, String gmailOld, String password, String authCode,
@@ -89,5 +89,21 @@ public class User {
 
     public void setSent(boolean sent) {
         this.sent = sent;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

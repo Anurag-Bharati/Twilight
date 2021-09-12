@@ -1,5 +1,6 @@
 package LoginSignUp;
 
+import Dashboard.DashboardController;
 import Dashboard.User;
 import Manager.MailVerify;
 import Manager.ResizeHelper;
@@ -23,8 +24,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Locale;
@@ -40,6 +43,8 @@ import java.util.ResourceBundle;
  */
 
 public class SignUpController implements Initializable {
+    private static double xOffset;
+    private static double yOffset;
     protected Stage stage;
     protected Scene scene;
     public Parent root;
@@ -50,6 +55,7 @@ public class SignUpController implements Initializable {
     @FXML private JFXButton Quit;
     @FXML private JFXButton Minimize;
     @FXML private JFXButton Expand;
+    @FXML private JFXButton guestMode;
 
     @FXML private JFXButton next;
 
@@ -70,6 +76,8 @@ public class SignUpController implements Initializable {
 
     int screenWidth = 400;
     Random random = new Random();
+    private String country;
+    private String city;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -131,6 +139,9 @@ public class SignUpController implements Initializable {
         if (actionEvent.getSource().equals(next)){
             switchToSignUpVer(actionEvent);
         }
+        if (actionEvent.getSource().equals(guestMode)){
+            switchAsGuest(actionEvent);
+        }
 //      errorLabel.setText("Tip: You can login directly as a guest by clicking the guest button by the minimize
 //       button");
     }
@@ -148,6 +159,8 @@ public class SignUpController implements Initializable {
                 user.setConfirmPass(confirmPass);
                 user.setAuthCode(authCode);
                 user.setSent(sent);
+                user.setCountry(country);
+                user.setCity(city);
                 if (sendIt(user.getGivenName(), user.getGmail().strip().toLowerCase(Locale.ROOT))) {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
                             "/main/resources/LoginSignUp/LoginSignUp2.fxml"));
@@ -257,9 +270,46 @@ public class SignUpController implements Initializable {
         this.authCode = user.getAuthCode();
         this.sent = user.isSent();
         this.gmailOld = user.getGmailOld();
+        if (user.getCountry() != null) {
+            this.country = user.getCountry();
+        }
+        if (user.getCity()!= null) {
+            this.city = user.getCity();
+        }
 
         givenNameField.setText(givenName);
         familyNameField.setText(familyName);
         gmailField.setText(gmail);
     }
+    private void switchAsGuest(ActionEvent actionEvent) throws IOException {
+//        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.close();
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.TRANSPARENT);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
+//        root = FXMLLoader.load(Objects.requireNonNull(
+//                getClass().getClassLoader().getResource("main/resources/dashboard/Dashboard.fxml")));
+        root = fxmlLoader.load();
+        scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        DashboardController dashboardController =  fxmlLoader.getController();
+        dashboardController.name.setText("GUEST");
+        stage.setScene(scene);
+        stageDragable(root,stage);
+        stage.show();
+
+    }
+    public static void stageDragable(Parent root, Stage stage){
+
+        root.setOnMousePressed(mouseEvent -> {
+            xOffset = mouseEvent.getSceneX();
+            yOffset = mouseEvent.getSceneY();
+        });
+
+        root.setOnMouseDragged(mouseEvent -> {
+            stage.setX(mouseEvent.getScreenX()-xOffset);
+            stage.setY(mouseEvent.getScreenY()-yOffset);
+        });
+    }
+
 }
