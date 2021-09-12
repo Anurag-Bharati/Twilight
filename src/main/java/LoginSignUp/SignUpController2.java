@@ -1,5 +1,7 @@
 package LoginSignUp;
 
+import Dashboard.User;
+import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -8,28 +10,62 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-public class LoginSignUpController  implements Initializable {
+
+/**
+ *
+ * @author Anurag Bharati
+ *
+ */
+
+public class SignUpController2 implements Initializable {
     protected Stage stage;
     protected Scene scene;
+    public Parent root;
+    User user;
 
     @FXML protected AnchorPane rootStage;
     @FXML private AnchorPane rootFx;
     @FXML private JFXButton Quit;
     @FXML private JFXButton Minimize;
     @FXML private JFXButton Expand;
+
+    @FXML private Button back;
+    @FXML private JFXButton register;
+
+    @FXML private Label errorLabel;
+
+    @FXML private PasswordField passField;
+    @FXML private PasswordField confirmPassField;
+    @FXML private TextField authField;
+
+    private String givenName;
+    private String familyName;
+    private String password;
+    private String confirmPass;
+    private String authCode;
+    private String gmail;
+    private String gmailOld;
+    private Boolean sent = false;
 
     int screenWidth = 400;
     Random random = new Random();
@@ -90,6 +126,22 @@ public class LoginSignUpController  implements Initializable {
         }
         if (actionEvent.getSource().equals(Expand)){
             stage.setMaximized(!stage.isMaximized());
+        }
+    }
+    @FXML
+    public void switchToSignUp(ActionEvent event) throws IOException {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+                    "../../resource/LoginSignUp/LoginSignUp1.fxml"));
+            root = fxmlLoader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
+            ResizeHelper.addResizeListener(stage);
+            stage.show();
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 }
