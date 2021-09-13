@@ -1,5 +1,6 @@
 package LoginSignUp;
 
+import Dashboard.DashboardController;
 import Dashboard.User;
 import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
@@ -20,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -35,6 +37,8 @@ import java.util.ResourceBundle;
  */
 
 public class SignUpController4 implements Initializable {
+    private static double xOffset;
+    private static double yOffset;
     protected Stage stage;
     protected Scene scene;
     public Parent root;
@@ -50,6 +54,8 @@ public class SignUpController4 implements Initializable {
     private JFXButton Minimize;
     @FXML
     private JFXButton Expand;
+    @FXML
+    private JFXButton Guest;
 
     @FXML
     private Button back;
@@ -130,6 +136,10 @@ public class SignUpController4 implements Initializable {
         if (actionEvent.getSource().equals(back)) {
             switchToSignUp(actionEvent);
         }
+        if (actionEvent.getSource().equals(Guest)) {
+            switchAsGuest();
+        }
+
     }
 
     @FXML
@@ -177,5 +187,31 @@ public class SignUpController4 implements Initializable {
         this.gmailOld = user.getGmailOld();
         this.country = user.getCountry();
         this.city = user.getCity();
+    }
+    private void switchAsGuest() throws IOException {
+        stage.close();
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.TRANSPARENT);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
+        root = fxmlLoader.load();
+        scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        DashboardController dashboardController =  fxmlLoader.getController();
+        dashboardController.name.setText("GUEST");
+        stage.setScene(scene);
+        stageDragable(root,stage);
+        stage.show();
+    }
+    public static void stageDragable(Parent root, Stage stage){
+
+        root.setOnMousePressed(mouseEvent -> {
+            xOffset = mouseEvent.getSceneX();
+            yOffset = mouseEvent.getSceneY();
+        });
+
+        root.setOnMouseDragged(mouseEvent -> {
+            stage.setX(mouseEvent.getScreenX()-xOffset);
+            stage.setY(mouseEvent.getScreenY()-yOffset);
+        });
     }
 }

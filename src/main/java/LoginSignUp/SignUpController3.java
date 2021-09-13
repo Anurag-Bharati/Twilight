@@ -1,6 +1,8 @@
 package LoginSignUp;
 
+import Dashboard.DashboardController;
 import Dashboard.User;
+import Manager.DatabaseManager;
 import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
@@ -9,7 +11,6 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,10 +24,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -39,10 +45,13 @@ import java.util.ResourceBundle;
  */
 
 public class SignUpController3 implements Initializable {
+    private static double xOffset;
+    private static double yOffset;
     protected Stage stage;
     protected Scene scene;
     public Parent root;
     User user;
+    DatabaseManager databaseManager = new DatabaseManager();
 
     @FXML
     protected AnchorPane rootStage;
@@ -54,6 +63,8 @@ public class SignUpController3 implements Initializable {
     private JFXButton Minimize;
     @FXML
     private JFXButton Expand;
+    @FXML
+    private JFXButton Guest;
 
     @FXML
     private Button back;
@@ -111,7 +122,7 @@ public class SignUpController3 implements Initializable {
     }
 
     @FXML
-    private void onAction(ActionEvent actionEvent) throws IOException {
+    private void onAction(ActionEvent actionEvent) throws IOException, SQLException {
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         if (actionEvent.getSource().equals(Quit)) {
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(.4), rootStage);
@@ -147,10 +158,13 @@ public class SignUpController3 implements Initializable {
             switchToSignUp(actionEvent);
         }
         if (actionEvent.getSource().equals(register)) {
-            onDone(actionEvent);
+            switchToLogin(actionEvent);
         }
         if (actionEvent.getSource().equals(EULA)) {
             switchToEULA(actionEvent);
+        }
+        if (actionEvent.getSource().equals(Guest)) {
+            switchAsGuest();
         }
 
     }
@@ -205,7 +219,8 @@ public class SignUpController3 implements Initializable {
             errorLabel.setText("Country and City name must be at most 30 char long");
             return false;
         }
-
+        country = countryField.getText();
+        city = cityField.getText();
         return true;
     }
 
@@ -264,21 +279,113 @@ public class SignUpController3 implements Initializable {
     }
 
     @FXML
-    private void switchToLogin(Event event) throws IOException {
+    private void switchToLogin(ActionEvent event) throws SQLException {
         if (check()) {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/Login.fxml"));
-            root = fxmlLoader.load();
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            stage.setScene(scene);
-            ResizeHelper.addResizeListener(stage);
-            stage.show();
+            if (NoExistence()) {
+                addNewUser();
+                countryField.setText("");
+                cityField.setText("");
+                countryField.setDisable(true);
+                cityField.setDisable(true);
+                back.setDisable(true);
+                EULA.setDisable(true);
+                Guest.setDisable(true);
+                Expand.setDisable(true);
+                Minimize.setDisable(true);
+                Quit.setDisable(true);
+                register.setDisable(true);
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(.3), errorLabel);
+                fadeTransition.setFromValue(1.0);
+                fadeTransition.setToValue(0.0);
+                fadeTransition.setCycleCount(6);
+                fadeTransition.setAutoReverse(true);
+                fadeTransition.setCycleCount(10);
+                fadeTransition.play();
+                errorLabel.setText("User Added Successfully! Now Redirecting...");
+                errorLabel.setTextFill(Color.web("#3e8948"));
+                fadeTransition.setOnFinished(e->{
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp0.fxml"));
+                    try {
+                        root = fxmlLoader.load();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    scene = new Scene(root);
+                    scene.setFill(Color.TRANSPARENT);
+                    stage.setScene(scene);
+                    ResizeHelper.addResizeListener(stage);
+                    stage.show();
+                });
+
+            } else {
+                errorLabel.setText("User Already Exists! Please, Provide a new Gmail");
+                errorLabel.setTextFill(Color.web("#f77622"));
+            }
         }
     }
 
-    @FXML
-    private void onDone(ActionEvent actionEvent) {
-        check();
+    private boolean NoExistence() throws SQLException {
+        Connection connection = databaseManager.connect();
+
+        PreparedStatement checkGmail = connection.prepareStatement(
+                "SELECT gmail FROM person WHERE gmail = ?");
+        checkGmail.setString(1, gmail);
+
+        ResultSet result = checkGmail.executeQuery();
+        if(result.next()) {
+            if (gmail.strip().equals(result.getString("gmail"))) {
+                result.close();
+                checkGmail.close();
+                databaseManager.disconnect();
+                return false;
+            }
+        }
+        checkGmail.close();
+        connection.close();
+        databaseManager.disconnect();
+        return true;
+
+    }
+    private void addNewUser() throws SQLException {
+        Connection connection = databaseManager.connect();
+        PreparedStatement addUser = connection.prepareStatement(
+                "insert into person (gmail, given_name, family_name, pass, country, city) values (?,?,?,?,?,?)");
+        addUser.setString(1,gmail);
+        addUser.setString(2,givenName);
+        addUser.setString(3,familyName);
+        addUser.setString(4,password);
+        addUser.setString(5,country);
+        addUser.setString(6,city);
+        addUser.executeUpdate();
+        addUser.close();
+        connection.close();
+        databaseManager.disconnect();
+    }
+    private void switchAsGuest() throws IOException {
+        stage.close();
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.TRANSPARENT);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
+        root = fxmlLoader.load();
+        scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        DashboardController dashboardController =  fxmlLoader.getController();
+        dashboardController.name.setText("GUEST");
+        stage.setScene(scene);
+        stageDragable(root,stage);
+        stage.show();
+    }
+    public static void stageDragable(Parent root, Stage stage){
+
+        root.setOnMousePressed(mouseEvent -> {
+            xOffset = mouseEvent.getSceneX();
+            yOffset = mouseEvent.getSceneY();
+        });
+
+        root.setOnMouseDragged(mouseEvent -> {
+            stage.setX(mouseEvent.getScreenX()-xOffset);
+            stage.setY(mouseEvent.getScreenY()-yOffset);
+        });
     }
 }

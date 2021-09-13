@@ -26,8 +26,8 @@ public class MailVerify {
         properties.put("mail.smtp.port","587");
         properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
-        String myAccountEmail = "noreply.thisisforaproject@gmail.com";
-        String myAccountPassword = Pass.getPass();
+        String myAccountEmail = PersonalDataField.MASTER_GMAIL;
+        String myAccountPassword = PersonalDataField.MASTER_PASS;
 
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override

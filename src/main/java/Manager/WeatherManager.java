@@ -54,7 +54,7 @@ public class WeatherManager {
         try {
             System.out.println("[API] Now calling the OPEN WEATHER API");
             json = readJsonFromUrl(
-                    "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+PersonalDetail.API_TOKEN +"&lang=eng&units=metric");
+                    "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+ PersonalDataField.API_TOKEN +"&lang=eng&units=metric");
         } catch (IOException | JSONException e) {
             return;
         }

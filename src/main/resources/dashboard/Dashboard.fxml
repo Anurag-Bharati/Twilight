@@ -198,6 +198,11 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </JFXButton>
+                                    <Label fx:id="errorField" alignment="CENTER" blendMode="ADD" layoutX="114.0" layoutY="239.0" prefHeight="18.0" prefWidth="94.0" textFill="#f77622" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                            </children>

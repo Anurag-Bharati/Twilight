@@ -5,25 +5,6 @@ public class User {
     private String givenName, familyName, gmail, country, city, gmailOld, password,confirmPass, authCode;
     private boolean sent;
 
-//    User(String firstName, String lastName, String gmail, String gmailOld, String password, String authCode,
-//         boolean sent ){
-//        this.givenName = firstName;
-//        this.familyName = lastName;
-//        this.gmail = gmail;
-//        this.gmailOld = gmailOld;
-//        this.password = password;
-//        this.authCode = authCode;
-//        this.sent = sent;
-//    }
-//
-//    User(String firstName, String lastName, String gmail, String gmailOld, boolean sent){
-//        this.givenName = firstName;
-//        this.familyName = lastName;
-//        this.gmail = gmail;
-//        this.gmailOld = gmailOld;
-//        this.sent = sent;
-//    }
-
     public User(){}
 
     public String getGivenName() {

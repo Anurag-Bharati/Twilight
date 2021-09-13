@@ -65,7 +65,7 @@
                         <Image url="@../anonUser.png" />
                      </image>
                   </ImageView>
-                  <JFXButton alignment="CENTER" layoutX="276.0" layoutY="7.0" prefHeight="30.0" prefWidth="30.0" ripplerFill="#82f5ff" text=" " textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="0.0">
+                  <JFXButton fx:id="Guest" alignment="CENTER" layoutX="276.0" layoutY="7.0" onAction="#onAction" prefHeight="30.0" prefWidth="30.0" ripplerFill="#82f5ff" text=" " textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="9.0" />
                      </font>

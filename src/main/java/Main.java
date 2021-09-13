@@ -25,16 +25,15 @@ public class Main extends Application implements Initializable {
     Parent root;
 
     String dashboard = "main/resources/dashboard/Dashboard.fxml";
-    String signup = "main/resources/LoginSignUp/LoginSignUp0.fxml";
+    String ignite = "main/resources/LoginSignUp/LoginSignUp0.fxml";
 
     @Override
     public void start(Stage stage){
 
 
         try{
-            //https://stackoverflow.com/questions/61531317/how-do-i-determine-the-correct-path-for-fxml-files-css-files-images-and-other
             root = FXMLLoader.load(Objects.requireNonNull(
-                    getClass().getClassLoader().getResource(signup)));
+                    getClass().getClassLoader().getResource(ignite)));
             scene = new Scene(root);
             stage.initStyle(StageStyle.TRANSPARENT);
             scene.setFill(Color.TRANSPARENT);
@@ -43,7 +42,6 @@ public class Main extends Application implements Initializable {
                 ResizeHelper.addResizeListener(stage);
             }else stageDragable(root,stage);
             stage.show();
-
         }
 
         catch (Exception e){

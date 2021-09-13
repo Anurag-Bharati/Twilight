@@ -37,7 +37,8 @@ public class DashboardController implements Initializable {
 
     protected Stage stage;
     WeatherManager weatherManager;
-    String CITY;
+    User user;
+    public String CITY;
 
     // FXML CONTAINERS
     @FXML private AnchorPane rootStage;
@@ -56,6 +57,7 @@ public class DashboardController implements Initializable {
     @FXML private Label time;
     @FXML private Label date;
     @FXML private Label day;
+    @FXML private Label errorField;
 
     @FXML private Circle circle1;
     @FXML private Circle circle2;
@@ -63,7 +65,7 @@ public class DashboardController implements Initializable {
     @FXML private Circle circle4;
     @FXML private Circle circle5;
 
-    @FXML private TextField searchBar;
+    @FXML public TextField searchBar;
     @FXML private Label city;
     @FXML private Label country;
     @FXML private Label sunrise;
@@ -78,6 +80,8 @@ public class DashboardController implements Initializable {
     SimpleDateFormat timeFormat, dateFormat, dayFormat;
     String DAY, MONTH;
 
+    String oldCity = "";
+    private boolean debug = false;
 
     Image[] images = new Image[10]; // Predefined array of Images
     Random random = new Random();   // Making obj of Random
@@ -133,7 +137,6 @@ public class DashboardController implements Initializable {
         initDateObjects();
         initDateDay();
         timer.scheduleAtFixedRate(task, 0, 1000); // Here we called the timer.
-        animateCircles();
         focusBackground();
     }
 
@@ -203,31 +206,43 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void onSearch() {
-        TimerTask task = new TimerTask() { // This is where the task is
-            @Override
-            public void run() {
-                Platform.runLater(() -> { // To update the UI element
-                    if (searchBar.getText().equals("")) {
-                        System.out.println("EMPTY");
-                    } else {
-                        try {
-                            CITY = searchBar.getText().trim();
-                            searchBar.setText((searchBar.getText().trim()).toUpperCase());
-                            weatherManager = new WeatherManager(CITY);
-                            showWeather();
-                            fx();
-
-                        } catch (Exception e) {
-                            // TODO: 9/10/2021 IF ABOVE DID NOT WORK
-                            // TODO: 9/11/2021 PHOTOSHOP THE ICONS SO THAT EACH IS ANCHORED ON THEIR LEG
-                            e.printStackTrace();
+        if (!searchBar.getText().equals(oldCity)) {
+            oldCity = searchBar.getText();
+            animateCircles();
+            TimerTask task = new TimerTask() { // This is where the task is
+                @Override
+                public void run() {
+                    Platform.runLater(() -> { // To update the UI element
+                        if (searchBar.getText().equals("")) {
+                            System.out.println("EMPTY");
+                        } else {
+                            try {
+                                CITY = searchBar.getText().trim();
+                                searchBar.setText((searchBar.getText().trim()).toUpperCase());
+                                weatherManager = new WeatherManager(CITY);
+                                showWeather();
+                                fx();
+                                errorField.setText(" ");
+                            } catch (Exception e) {
+                                if (debug) {
+                                    e.printStackTrace();
+                                }
+                                errorField.setText("The weather of "+CITY.toUpperCase(Locale.ROOT)+" is not available");
+                                temperature.setText("N/A");
+                                cloudiness.setText("N/A");
+                                pressure.setText("N/A");
+                                windSpeed.setText("N/A");
+                                humidity.setText("N/A");
+                                country.setText("N/A");
+                            }
                         }
-                    }
-                });
-            }
-        };
-        timer.scheduleAtFixedRate(task, 0, 3_600_000);
-        // Updates Automatically after 1 hour which is 3.6e+6 ms.
+                    });
+                }
+            };
+            timer.scheduleAtFixedRate(task, 0, 3_600_000);
+            // Updates Automatically after 1 hour which is 3.6e+6 ms.
+        }
+
     }
 
     private void showWeather() throws JSONException {
@@ -318,14 +333,6 @@ public class DashboardController implements Initializable {
         transition.play();
 
 
-        TimerTask animate = new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(transition::play);
-            }
-        };
-        timer.scheduleAtFixedRate(animate, 0, 5000); // Here we called the timer.
-
     }
 
     private void fx() {
@@ -391,7 +398,7 @@ public class DashboardController implements Initializable {
                 || weather.equals("11d")||weather.equals("11n")){
             return "rain";
         }
-        else if (weather.equals("13d")||weather.equals("13n")){
+        else if (weather.equals("13d")||weather.equals("13n")|| weatherManager.getTemperature()<0){
             return "snow";
         }
         else if (weatherManager.getTemperature()<=0){
@@ -402,6 +409,18 @@ public class DashboardController implements Initializable {
         }
         else return "null";
         // TODO: 9/11/2021 Will add other fx in near future. -Anurag Bharati
+    }
+    public void fetchUser(User user){
+        this.user = new User();
+        this.user.setGivenName(user.getGivenName());
+        this.user.setGmail(user.getGmail());
+        this.user.setCountry(user.getCountry());
+        if (!Objects.equals(user.getCity(), "")){
+            this.user.setCity(user.getCity());
+            this.searchBar.setText(this.user.getCity());
+            onSearch();
+        }
+        this.name.setText(this.user.getGivenName().toUpperCase());
     }
 
 }

@@ -1,6 +1,8 @@
 package LoginSignUp;
 
 import Dashboard.DashboardController;
+import Dashboard.User;
+import Manager.DatabaseManager;
 import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
@@ -27,6 +29,11 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -44,6 +51,7 @@ public class LoginController implements Initializable {
     protected Stage stage;
     protected Scene scene;
     public Parent root;
+    private final DatabaseManager databaseManager = new DatabaseManager();;
 
     @FXML protected AnchorPane rootStage;
     @FXML private AnchorPane rootFx;
@@ -60,6 +68,8 @@ public class LoginController implements Initializable {
 
     @FXML private TextField gmailField;
     @FXML private PasswordField passField;
+
+    private String givenName, familyName, gmail, country, city;
 
     int screenWidth = 400;
     Random random = new Random();
@@ -136,16 +146,16 @@ public class LoginController implements Initializable {
     @FXML
     private void switchToSignUp(ActionEvent event) throws Exception {
         errorLabel.setTextFill(Color.WHITE);
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                            "/main/resources/LoginSignUp/LoginSignUp1.fxml"));
-                    root = fxmlLoader.load();
-                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    stage.setMaximized(false);
-                    scene = new Scene(root);
-                    scene.setFill(Color.TRANSPARENT);
-                    stage.setScene(scene);
-                    ResizeHelper.addResizeListener(stage);
-                    stage.show();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+                "/main/resources/LoginSignUp/LoginSignUp1.fxml"));
+        root = fxmlLoader.load();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setMaximized(false);
+        scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        stage.setScene(scene);
+        ResizeHelper.addResizeListener(stage);
+        stage.show();
 
     }
     public boolean checkGmail(String gMail) {
@@ -178,15 +188,19 @@ public class LoginController implements Initializable {
             errorLabel.setText("Please, provide a valid gmail address");
             errorLabel.setTextFill(Color.web("#f77622"));
             return false;
-        }else if (passField.getText().length()<8){
+        }else if (Objects.equals(passField.getText(), "")){
             errorLabel.setText("Please, provide your password");
+            errorLabel.setTextFill(Color.web("#f77622"));
+            return false;
+        }else if (passField.getText().length()<8){
+            errorLabel.setText("Invalid Password, Please try again");
             errorLabel.setTextFill(Color.web("#f77622"));
             return false;
         } else return true;
     }
 
     private void switchAsGuest(ActionEvent actionEvent) throws IOException {
-
+        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
         Stage stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -203,8 +217,110 @@ public class LoginController implements Initializable {
 
     }
 
-    private void login(ActionEvent actionEvent){
-        // TODO: 9/13/2021 Database Connection and Data Retrieval
+    private void login(ActionEvent actionEvent) throws SQLException, IOException{
+        User user;
+        if (checkPass()) {
+            user = fetchUser();
+            if (user != null){
+                stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.close();
+                Stage stage = new Stage();
+                stage.initStyle(StageStyle.TRANSPARENT);
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
+
+                root = fxmlLoader.load();
+                scene = new Scene(root);
+                scene.setFill(Color.TRANSPARENT);
+                DashboardController dashboardController =  fxmlLoader.getController();
+                dashboardController.fetchUser(user);
+                stage.setScene(scene);
+                stageDragable(root,stage);
+                stage.show();
+            }
+        } else {
+            errorLabel.setText("Incorrect login credential. Please, try again");
+            errorLabel.setTextFill(Color.web("#f77622"));
+        }
+
+    }
+    private boolean checkPass() throws SQLException {
+        Connection connection = databaseManager.connect();
+
+        PreparedStatement checkGmail = connection.prepareStatement(
+                "SELECT gmail FROM person WHERE gmail = ?");
+        checkGmail.setString(1, gmailField.getText().toLowerCase(Locale.ROOT).strip());
+        ResultSet result = checkGmail.executeQuery();
+        if (result.next()){
+            if(gmailField.getText().strip().toLowerCase(Locale.ROOT).equals(
+                    result.getString("gmail").strip())){
+                PreparedStatement checkPass = connection.prepareStatement("SELECT pass FROM person " +
+                        "WHERE gmail = ?");
+                checkPass.setString(1, gmailField.getText().toLowerCase(Locale.ROOT).strip());
+                ResultSet result0 = checkPass.executeQuery();
+                if(result0.next()){
+                    if(passField.getText().equals(result0.getString("pass"))){
+                        result0.close();
+                        result.close();
+                        checkPass.close();
+                        checkGmail.close();
+                        connection.close();
+                        databaseManager.disconnect();
+                        return true;
+                    }
+                    else {
+                        result0.close();
+                        result.close();
+                        checkPass.close();
+                        checkGmail.close();
+                        connection.close();
+                        databaseManager.disconnect();
+                        return false;
+                    }
+
+                }
+                checkGmail.close();
+                checkPass.close();
+                result0.close();
+                result.close();
+                connection.close();
+                databaseManager.disconnect();
+                return false;
+            }
+
+        }
+        checkGmail.close();
+        result.close();
+        connection.close();
+        databaseManager.disconnect();
+        return false;
+    }
+    private User fetchUser() throws SQLException {
+        User user = new User();
+        Connection connection = databaseManager.connect();
+        PreparedStatement checkGmail = connection.prepareStatement(
+                "SELECT * FROM person WHERE gmail = ?");
+        checkGmail.setString(1, gmailField.getText().toLowerCase(Locale.ROOT).strip());
+        ResultSet resultSet = checkGmail.executeQuery();
+        if (resultSet.next()) {
+            user.setGivenName(resultSet.getString("given_name"));
+            user.setFamilyName(resultSet.getString("family_name"));
+            user.setGmail(resultSet.getString("gmail"));
+            user.setCountry(resultSet.getString("country"));
+            user.setCity(resultSet.getString("city"));
+
+            System.out.println(resultSet.getString("country"));
+            resultSet.close();
+            checkGmail.close();
+            connection.close();
+            databaseManager.disconnect();
+            return user;
+        }
+        resultSet.close();
+        checkGmail.close();
+        connection.close();
+        databaseManager.disconnect();
+        return null;
+
     }
 
     public static void stageDragable(Parent root, Stage stage){

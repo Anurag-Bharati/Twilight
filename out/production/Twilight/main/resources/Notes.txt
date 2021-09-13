@@ -1,1 +1,2 @@
 If any prob occurs, the focus system may have caused it.
+//https://stackoverflow.com/questions/61531317/how-do-i-determine-the-correct-path-for-fxml-files-css-files-images-and-other
