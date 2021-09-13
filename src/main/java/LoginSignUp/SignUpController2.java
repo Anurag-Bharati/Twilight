@@ -169,7 +169,7 @@ public class SignUpController2 implements Initializable {
         user.setCountry(country);
         user.setCity(city);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp1.fxml"));
         root = fxmlLoader.load();
 
         SignUpController signUpController = fxmlLoader.getController();
@@ -220,12 +220,15 @@ public class SignUpController2 implements Initializable {
             if (passField.getText().equals(confirmPassField.getText())) {
                 if (checkPasswordStrength(passField.getText())) {
                     return true;
-                } else errorLabel.setText("Password must contain at least one letter and number");
+                } else errorLabel.setText("Password must contain at least one letter and number");errorLabel.setTextFill(Color.web("#f77622"));
+
                 return false;
-            } else errorLabel.setText("Password does not match on both fields");
+            } else errorLabel.setText("Password does not match on both fields");errorLabel.setTextFill(Color.web("#f77622"));
+
             return false;
 
-        } else errorLabel.setText("Password must be at least 8 character long");
+        } else errorLabel.setText("Password must be at least 8 character long");errorLabel.setTextFill(Color.web("#f77622"));
+
         return false;
     }
 
@@ -258,7 +261,10 @@ public class SignUpController2 implements Initializable {
             confirmPass = confirmPassField.getText();
             if (authField.getText().strip().equals(authCodeSys)) {
                 switchToLast(actionEvent);
-            }else errorLabel.setText("Auth code does not match");
+            }else {
+                errorLabel.setTextFill(Color.web("#f77622"));
+                errorLabel.setText("Auth code does not match");
+            }
         }
     }
     private void switchToLast(ActionEvent event) throws IOException {

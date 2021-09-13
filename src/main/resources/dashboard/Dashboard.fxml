@@ -188,7 +188,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="searchBar" alignment="CENTER" focusTraversable="false" layoutX="50.0" layoutY="146.0" onKeyPressed="#enableSearch" onMouseEntered="#enableSearch" onMouseExited="#enableSearch" prefWidth="149.0" promptText="Your City Name Here" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white; -fx-text-inner-color: white;" AnchorPane.bottomAnchor="172.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="146.0">
+                                    <TextField fx:id="searchBar" alignment="CENTER" blendMode="ADD" focusTraversable="false" layoutX="50.0" layoutY="146.0" onKeyPressed="#enableSearch" onMouseEntered="#enableSearch" onMouseExited="#enableSearch" prefWidth="149.0" promptText="Your City Name Here" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white; -fx-text-inner-color: white;" AnchorPane.bottomAnchor="172.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="146.0">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>

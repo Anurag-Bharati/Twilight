@@ -191,14 +191,17 @@ public class SignUpController3 implements Initializable {
 
     private boolean check() {
         if (Objects.equals(countryField.getText(), "") || Objects.equals(cityField.getText(), "")){
+            errorLabel.setTextFill(Color.web("#f77622"));
             errorLabel.setText("Please provide your country and city name");
             return false;
         }
         if (countryField.getText().length()<3 || cityField.getText().length()<3){
+            errorLabel.setTextFill(Color.web("#f77622"));
             errorLabel.setText("Country and City name must be at least 3 char long");
             return false;
         }
         if (countryField.getText().length()>30 || cityField.getText().length()>30){
+            errorLabel.setTextFill(Color.web("#f77622"));
             errorLabel.setText("Country and City name must be at most 30 char long");
             return false;
         }

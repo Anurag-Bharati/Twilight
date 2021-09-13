@@ -235,26 +235,30 @@ public class SignUpController implements Initializable {
 
         if (Objects.requireNonNull(givenNameField.getText()).length() < 3) {
             errorLabel.setText("Given Name must be at least 3 characters long");
+            errorLabel.setTextFill(Color.web("#f77622"));
             return false;
         }else if (Objects.requireNonNull(givenNameField.getText()).length() > 30) {
             errorLabel.setText("Given Name must be of 30 characters max");
+            errorLabel.setTextFill(Color.web("#f77622"));
             return false;
         }if (Objects.requireNonNull(familyNameField.getText()).length() < 3) {
             errorLabel.setText("Family Name must be at least 3 characters long");
+            errorLabel.setTextFill(Color.web("#f77622"));
             return false;
         }else if (Objects.requireNonNull(familyNameField.getText()).length() > 30) {
             errorLabel.setText("Family Name must be of 30 characters max");
+            errorLabel.setTextFill(Color.web("#f77622"));
             return false;
 
         }else if (Objects.requireNonNull(gmailField.getText()).length() <= 10) {
             errorLabel.setText("Please, provide a valid gmail address");
+            errorLabel.setTextFill(Color.web("#f77622"));
             return false;
         } else if (!errorLabel.getText().equals(
                 "All the requirements have been satisfied. Press Confirm to proceed.")){
             errorLabel.setText("All the requirements have been satisfied. Press Confirm to proceed.");
             errorLabel.setTextFill(Color.web("#3e8948"));
             next.setText("CONFIRM");
-            System.out.println("Confirm");
             return false;
         } else return true;
     }
