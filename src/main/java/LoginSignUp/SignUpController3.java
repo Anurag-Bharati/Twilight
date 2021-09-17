@@ -3,6 +3,7 @@ package LoginSignUp;
 import Dashboard.DashboardController;
 import Dashboard.User;
 import Manager.DatabaseManager;
+import Manager.FileIO;
 import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
@@ -380,6 +381,9 @@ public class SignUpController3 implements Initializable {
         scene.setFill(Color.TRANSPARENT);
         DashboardController dashboardController =  fxmlLoader.getController();
         dashboardController.name.setText("GUEST");
+        FileIO fileIO = new FileIO();
+        dashboardController.fetchGuest(fileIO.read());
+        fileIO.close();
         stage.setScene(scene);
         stageDragable(root,stage);
         stage.show();

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -97,11 +98,6 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <JFXButton fx:id="login" layoutX="169.0" layoutY="267.0" onAction="#onAction" ripplerFill="#ade1a0" style="-fx-background-color: #63c74d;" text="Login" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="220.0">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </JFXButton>
                         <Label fx:id="errorLabel" alignment="CENTER" layoutX="186.0" layoutY="315.0" prefHeight="18.0" prefWidth="153.0" text="Tip: You can login directly as a guest by clicking the guest button" textFill="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="320.0">
                            <font>
                               <Font name="System Bold" size="8.0" />
@@ -129,6 +125,26 @@
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="14.0" layoutY="218.0" prefHeight="30.0" prefWidth="290.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="218.0">
+                           <children>
+                              <JFXButton fx:id="login" onAction="#onAction" prefHeight="26.0" prefWidth="80.0" ripplerFill="#ade1a0" style="-fx-background-color: #63c74d;" text="Login" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </JFXButton>
+                              <JFXButton fx:id="delete" onAction="#onAction" prefHeight="25.0" prefWidth="80.0" ripplerFill="#ffa29b" style="-fx-background-color: #dc473c;" text="Delete" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
                               </JFXButton>
                            </children>
                         </HBox>

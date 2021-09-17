@@ -67,6 +67,7 @@ public class LoginController implements Initializable {
     @FXML private JFXButton register;
 
     @FXML private JFXButton login;
+    @FXML private JFXButton delete;
 
     @FXML private Label errorLabel;
 
@@ -109,6 +110,7 @@ public class LoginController implements Initializable {
      */
     @FXML
     private void onAction(ActionEvent actionEvent) throws Exception {
+        errorLabel.setTextFill(Color.web("#f77622"));
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         if (actionEvent.getSource().equals(Quit)) {
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(.4), rootStage);
@@ -143,6 +145,30 @@ public class LoginController implements Initializable {
         if (actionEvent.getSource().equals(login)){
             if (checkFields()&&checkGmail(gmailField.getText())){
                 login(actionEvent);
+            } else return;
+        }
+        if (actionEvent.getSource().equals(delete)){
+            if (checkFields()&&checkGmail(gmailField.getText())){
+                if (checkPass()) {
+                    if (!delete.getText().equals("Confirm")) {
+                        errorLabel.setTextFill(Color.web("#be4a2f"));
+                        errorLabel.setText("Please, Press confirm to proceed");
+                        delete.setText("Confirm");
+
+                    } else if (delete.getText().equals("Confirm")){
+                        if (removeUser() != 0) {
+                            errorLabel.setTextFill(Color.web("#3e8948"));
+                            errorLabel.setText("User successfully removed");
+                            delete.setText("Delete");
+                            gmailField.setText("");
+                            passField.setText("");
+
+                        } else errorLabel.setText("Something went wrong, Please try again");
+                    }
+                } else if (errorLabel.getText().equals("User not found")) {
+                    errorLabel.setText("User not found ");
+                } else errorLabel.setText("Something went wrong, Please try again");
+
             }
         }
         if (actionEvent.getSource().equals(guestMode)||actionEvent.getSource().equals(guest)){
@@ -280,7 +306,7 @@ public class LoginController implements Initializable {
                 stageDragable(root,stage);
                 stage.show();
             }
-        } else {
+        }else {
             errorLabel.setText("Incorrect login credential. Please, try again");
             errorLabel.setTextFill(Color.web("#f77622"));
         }
@@ -342,6 +368,7 @@ public class LoginController implements Initializable {
         result.close();
         connection.close();
         databaseManager.disconnect();
+        errorLabel.setText("User not found");
         return false;
     }
 
@@ -379,6 +406,25 @@ public class LoginController implements Initializable {
         return null;
 
     }
+
+    /**
+     * <h2>Delete User</h2>
+     * <p>This method deletes the user data from db</p>
+     * @return int, 0 if nothing changed in database > 0 if sth changed
+     * @throws SQLException if sth is wrong with the query or db
+     */
+    private int removeUser() throws SQLException {
+        Connection connection = databaseManager.connect();
+        PreparedStatement checkGmail = connection.prepareStatement(
+                "DELETE FROM person WHERE gmail = ?");
+        checkGmail.setString(1, gmailField.getText().toLowerCase(Locale.ROOT).strip());
+        int result = checkGmail.executeUpdate();
+        checkGmail.close();
+        connection.close();
+        databaseManager.disconnect();
+        return result;
+    }
+
 
     /**
      * <h2>Enables Stage Drag</h2>
