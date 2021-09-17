@@ -1,6 +1,7 @@
 package Dashboard;
 
 
+import Manager.FileIO;
 import Manager.IconManager;
 import Manager.WeatherManager;
 import com.jfoenix.controls.JFXButton;
@@ -23,14 +24,17 @@ import javafx.util.Duration;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- *
  * @author Anurag Bharati
- *
+ * @since 2021
+ * @version 1.0
  */
 
 public class DashboardController implements Initializable {
@@ -51,7 +55,7 @@ public class DashboardController implements Initializable {
     @FXML private JFXButton MINIMIZE;
     @FXML private JFXButton EXIT;
     @FXML private JFXButton searchButton;
-
+    @FXML private JFXButton saveButton;
 
     @FXML public Label name;
     @FXML private Label time;
@@ -68,8 +72,12 @@ public class DashboardController implements Initializable {
     @FXML public TextField searchBar;
     @FXML private Label city;
     @FXML private Label country;
+
+    @SuppressWarnings("unused")
     @FXML private Label sunrise;
+    @SuppressWarnings("unused")
     @FXML private Label sunset;
+
     @FXML private Label temperature;
     @FXML private Label desc;
     @FXML private Label windSpeed;
@@ -81,12 +89,17 @@ public class DashboardController implements Initializable {
     String DAY, MONTH;
 
     String oldCity = "";
+    String oldCity1= "";
+
+    @SuppressWarnings("FieldMayBeFinal")
     private boolean debug = false;
+    private boolean pass = false;
 
-    Image[] images = new Image[10]; // Predefined array of Images
+    Image[] images;
     Random random = new Random();   // Making obj of Random
+    FileIO fileIO = new FileIO();
 
-    Timer timer = new Timer();// This is a timer, used to time things.
+    Timer timer = new Timer(); // This is a timer, used to time things.
     TimerTask task = new TimerTask() { // This is where the task is
         @Override
         public void run() {
@@ -96,10 +109,16 @@ public class DashboardController implements Initializable {
         }
     };
 
+    /**
+     * <h2>Main Event Handler</h2>
+     * <p>Handles quit and minimize key presses<p/>
+     * @param event takes ActionEvent i.e. any event related to button.
+     */
     @FXML
-    private void eventHandler(ActionEvent event) {
+    private void eventHandler(ActionEvent event) throws IOException {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         if (event.getSource().equals(EXIT)) {
+            fileIO.close();
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(.4), rootStage);
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(.4), rootStage);
 
@@ -122,9 +141,17 @@ public class DashboardController implements Initializable {
             });
         } else if (event.getSource().equals(MINIMIZE)) {
             stage.setIconified(!stage.isIconified());
+        } else if (event.getSource().equals(saveButton)){
+            System.out.println("save");
         }
     }
 
+    /**
+     * <h2>Runs First</h2>
+     * <p>This method runs after constructor and after all injectable done injecting</p>
+     * @param url a pointer to resource location
+     * @param resourceBundle local specified resources
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { // This method loads when this controller is
         // called from main.
@@ -140,9 +167,20 @@ public class DashboardController implements Initializable {
         focusBackground();
     }
 
-    public void loadImages() throws ArrayIndexOutOfBoundsException, NullPointerException { // This will
-        // check how many files are there in the given dir and loads them one by one on an array.
+    /**
+     * <h2>Loads background image</h2>
+     * <p>This method check how many files are there in the given dir and loads them one by one on an array
+     * . And chooses one random to be applied. Why not straight choose one image and apply it? Why load them on an
+     * array? - Because I'm planning to add image slide show in later version.
+     * </p>
+     * @throws ArrayIndexOutOfBoundsException If array size is changes from dynamic to static
+     * @throws NullPointerException If no image is in the dir
+     */
+    public void loadImages() throws ArrayIndexOutOfBoundsException, NullPointerException {
+
         int filesTotal = Objects.requireNonNull(new File("src/main/resources/Images").listFiles()).length;
+        images  = new Image[filesTotal]; // sets the array size of Images
+
         for (int i = 0; i < filesTotal; i++) {
             images[i] = new Image("main/resources/Images/" + i + ".jpg");
         }
@@ -154,6 +192,10 @@ public class DashboardController implements Initializable {
         dayFormat = new SimpleDateFormat("u");
     }
 
+    /**
+     * <h2>Date Widget</h2>
+     * <p>This init and sets the date provided by system</p>
+     */
     private void initDateDay() {
 
         String monthDate = dateFormat.format(Calendar.getInstance().getTime());
@@ -203,13 +245,54 @@ public class DashboardController implements Initializable {
     private void enableSearch() {
         searchButton.setDisable(searchBar.getText() == null || (searchBar.getText().strip().length() < 2));
     }
+    @FXML
+    private void onSave() throws IOException, JSONException {
+        errorField.setTextFill(Color.web("#f77622"));
+        if (searchBar.getText().equals("")){
+            if (fileIO.read()!=null){
+                setGuestCity("");
+            }
+            fileIO.close();
+            errorField.setTextFill(Color.web("#3e8948"));
+            errorField.setText("The default guest city has been removed");
+        }
+        else if (pass){
+            if (!searchBar.getText().equals(oldCity1)) {
+                weatherManager = new WeatherManager(searchBar.getText());
+                try {
+                    if (weatherManager.getWeather()) {
+                        setGuestCity(searchBar.getText());
+                        oldCity1 = searchBar.getText();
+                        errorField.setTextFill(Color.web("#3e8948"));
+                        errorField.setText("The guest city has been set to "+searchBar.getText());
 
+                    } else errorField.setText("Invalid city can not be saved");
+
+                } catch (FileNotFoundException e){
+                    if (debug) {
+                        e.printStackTrace();
+                    } else System.out.println("[API] Invalid City Name [Debug] State: Disabled");
+                    errorField.setText("Invalid city can not be saved");
+                }
+            } else errorField.setText("City "+searchBar.getText()+" has already been saved");
+
+        } else {
+            if (fileIO.read()!=null){
+                System.out.println(1);
+                setGuestCity("");
+            }
+            fileIO.close();
+            errorField.setText("Please, Search first and then proceed");
+        }
+    }
     @FXML
     private void onSearch() {
+
         if (!searchBar.getText().equals(oldCity)) {
             oldCity = searchBar.getText();
             animateCircles();
             TimerTask task = new TimerTask() { // This is where the task is
+                @SuppressWarnings("ConstantConditions")
                 @Override
                 public void run() {
                     Platform.runLater(() -> { // To update the UI element
@@ -217,17 +300,31 @@ public class DashboardController implements Initializable {
                             System.out.println("EMPTY");
                         } else {
                             try {
+                                errorField.setText("");
                                 CITY = searchBar.getText().trim();
                                 searchBar.setText((searchBar.getText().trim()).toUpperCase());
                                 weatherManager = new WeatherManager(CITY);
-                                showWeather();
-                                fx();
-                                errorField.setText(" ");
+                                try {
+                                    if(showWeather()) {
+                                        pass = true;
+                                        fx();
+                                    }
+                                }
+                                catch (UnknownHostException e){
+                                    errorField.setText("Please, Connect to a network");
+                                }
+
+
                             } catch (Exception e) {
-                                if (debug) {
+                                if (!debug){
+                                    System.out.println("[Debug] State: Disabled");
+                                }
+                                else if (debug) {
                                     e.printStackTrace();
                                 }
                                 errorField.setText("The weather of "+CITY.toUpperCase(Locale.ROOT)+" is not available");
+                                country.setText("N/A");
+                                city.setText("N/A");
                                 temperature.setText("N/A");
                                 cloudiness.setText("N/A");
                                 pressure.setText("N/A");
@@ -239,33 +336,41 @@ public class DashboardController implements Initializable {
                     });
                 }
             };
-            timer.scheduleAtFixedRate(task, 0, 3_600_000);
-            // Updates Automatically after 1 hour which is 3.6e+6 ms.
-        }
-
+            timer.scheduleAtFixedRate(task, 0, 1_800_000);
+            // Updates Automatically after 30 min which is 1.8e+6 ms.
+        } else errorField.setText("Weather of "+CITY+" is already updated");
     }
+    /**
+     * <h2>Checks, gets and updates the weather</h2>
+     * <p>This function gets the weather and applies to the relevant label
+     *if and only the given condition is met.</p>
+     */
+    private boolean showWeather() throws JSONException, IOException {
 
-    private void showWeather() throws JSONException {
-        weatherManager.getWeather();
-        city.setText(weatherManager.getCity().toUpperCase());
-        temperature.setText(weatherManager.getTemperature().toString() + "°C");
-        desc.setText(weatherManager.getDescription().toUpperCase());
-        weatherIcon.setImage(new Image(IconManager.getImage(weatherManager.getIcon())));
-        country.setText(weatherManager.getCountry());
-        windSpeed.setText(weatherManager.getWindSpeed() + " m/s");
-        cloudiness.setText(weatherManager.getCloudiness() + "%");
-        pressure.setText(weatherManager.getPressure() + " hpa");
-        humidity.setText(weatherManager.getHumidity() + "%");
-        System.out.printf("The Weather of %S has been updated.\n", weatherManager.getCity());
+        if (weatherManager.getWeather()) {
+            city.setText(weatherManager.getCity().toUpperCase());
+            temperature.setText(weatherManager.getTemperature().toString() + "°C");
+            desc.setText(weatherManager.getDescription().toUpperCase());
+            weatherIcon.setImage(new Image(IconManager.getImage(weatherManager.getIcon())));
+            country.setText(weatherManager.getCountry());
+            windSpeed.setText(weatherManager.getWindSpeed() + " m/s");
+            cloudiness.setText(weatherManager.getCloudiness() + "%");
+            pressure.setText(weatherManager.getPressure() + " hpa");
+            humidity.setText(weatherManager.getHumidity() + "%");
+            System.out.printf("The Weather of %S has been updated.\n", weatherManager.getCity());
+            return true;
+        } else return false;
     }
 
     @FXML
     private void focusBackground() {
         rootStage.requestFocus();
     }
-
-
+    /**
+     * <p>Upon Calling, animates the circle.</p>
+     */
     private void animateCircles() {
+
         ScaleTransition scaleTransition1 = new ScaleTransition(Duration.seconds(.4), circle1);
         ScaleTransition scaleTransition2 = new ScaleTransition(Duration.seconds(.3), circle2);
         ScaleTransition scaleTransition3 = new ScaleTransition(Duration.seconds(.6), circle3);
@@ -335,32 +440,39 @@ public class DashboardController implements Initializable {
 
     }
 
+    /**
+     * <h2>Animation Manager</h2>
+     * <p>Manages animation play</p>
+     */
     private void fx() {
-        String weather = weatherManager.getIcon();
-        if (checkWeather(weather).equals("snow")){
-            Circle[] c = new Circle[100];
-            for (int i = 0; i < 100; i++) {
-                c[i] = new Circle(1, random.nextInt(10) * -1, 1);
-                c[i].setRadius(random.nextDouble() * 3);
-                Color color = Color.rgb(255, 255, 255, random.nextDouble());
-                c[i].setFill(color);
-                rootFx.getChildren().add(c[i]);
-                Snow(c[i]);
-            }
-        } else if (checkWeather(weather).equals("rain")){
-            Rectangle[] r = new Rectangle[100];
-            for (int i = 0; i < 100; i++) {
-                r[i] = new Rectangle(1, random.nextInt(50),.5,10);
-                Color color = Color.rgb(255, 255, 255, random.nextDouble());
-                r[i].setFill(color);
-                rootFx.getChildren().add(r[i]);
-                Raining(r[i]);
-            }
-        } else if (checkWeather(weather).equals("ice")){
-            tempFx.setStyle("-fx-background-color:#000d21; -fx-opacity: 40%");
-        } else if (checkWeather(weather).equals("hot")){
-            tempFx.setStyle("-fx-background-color:#210b00; -fx-opacity: 40%");
-        } else tempFx.setStyle("-fx-background-color: black; -fx-opacity: 30%");
+        if (weatherManager.getIcon() != null) {
+            String weather = weatherManager.getIcon();
+            if (checkWeather(weather).equals("snow")) {
+                tempFx.setStyle("-fx-background-color:#000d21; -fx-opacity: 40%");
+                Circle[] c = new Circle[100];
+                for (int i = 0; i < 100; i++) {
+                    c[i] = new Circle(1, random.nextInt(10) * -1, 1);
+                    c[i].setRadius(random.nextDouble() * 3);
+                    Color color = Color.rgb(255, 255, 255, random.nextDouble());
+                    c[i].setFill(color);
+                    rootFx.getChildren().add(c[i]);
+                    Snow(c[i]);
+                }
+            } else if (checkWeather(weather).equals("rain")) {
+                Rectangle[] r = new Rectangle[100];
+                for (int i = 0; i < 100; i++) {
+                    r[i] = new Rectangle(1, random.nextInt(50), .5, 10);
+                    Color color = Color.rgb(255, 255, 255, random.nextDouble());
+                    r[i].setFill(color);
+                    rootFx.getChildren().add(r[i]);
+                    Raining(r[i]);
+                }
+            } else if (checkWeather(weather).equals("ice")) {
+                tempFx.setStyle("-fx-background-color:#000d21; -fx-opacity: 40%");
+            } else if (checkWeather(weather).equals("hot")) {
+                tempFx.setStyle("-fx-background-color:#210b00; -fx-opacity: 40%");
+            } else tempFx.setStyle("-fx-background-color: black; -fx-opacity: 30%");
+        }else errorField.setText("API not responding");
     }
 
     private void Snow(Circle c) {
@@ -387,29 +499,39 @@ public class DashboardController implements Initializable {
         walk.setFromY(-10);
         walk.setToY(400);
         walk.setOnFinished(t -> {
-            if (checkWeather(weatherManager.getIcon()).equals("rain")) {
+            if (checkWeather(weatherManager.getIcon()).equals("rain")){
                 Raining(r);
             }
         });
         walk.play();
     }
     private String checkWeather(String weather){
+        if (weather==null){
+            return "null";
+        }
         if (weather.equals("09d")||weather.equals("09n")||weather.equals("10d")||weather.equals("10n")
                 || weather.equals("11d")||weather.equals("11n")){
             return "rain";
         }
-        else if (weather.equals("13d")||weather.equals("13n")|| weatherManager.getTemperature()<0){
+        else if (weather.equals("13d")||weather.equals("13n")|| weatherManager.getTemperature()<=0){
             return "snow";
         }
-        else if (weatherManager.getTemperature()<=0){
+        else if (weatherManager.getTemperature()<=10){
             return "ice";
         }
-        else if (weatherManager.getTemperature()>30){
+
+        else if (weatherManager.getTemperature()>=30){
             return "hot";
         }
         else return "null";
         // TODO: 9/11/2021 Will add other fx in near future. -Anurag Bharati
     }
+
+    /**
+     * <h2>Fetches User Data</h2>
+     * <p>This Method fetches user data from the database only if logged in</p>
+     * @param user Sent from Database when logging in.
+     */
     public void fetchUser(User user){
         this.user = new User();
         this.user.setGivenName(user.getGivenName());
@@ -421,6 +543,19 @@ public class DashboardController implements Initializable {
             onSearch();
         }
         this.name.setText(this.user.getGivenName().toUpperCase());
+        saveButton.setDisable(true);
+
+    }
+    public void fetchGuest(String city){
+        if (city!=null){
+            this.searchBar.setText(city);
+            onSearch();
+        }
+    }
+
+    private void setGuestCity(String city) throws IOException {
+        fileIO.write(city);
+        fileIO.close();
     }
 
 }

@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -41,6 +42,8 @@ import java.util.ResourceBundle;
 /**
  *
  * @author Anurag Bharati
+ * @since 2021
+ * @version 1.0
  *
  */
 
@@ -362,10 +365,15 @@ public class SignUpController3 implements Initializable {
         connection.close();
         databaseManager.disconnect();
     }
+    /**
+     * <h2>Guest Mode</h2>
+     * @throws IOException if path ain't right
+     */
     private void switchAsGuest() throws IOException {
         stage.close();
         Stage stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
+        stage.getIcons().add(new Image("/main/resources/twilight.png"));
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
         root = fxmlLoader.load();
         scene = new Scene(root);
@@ -376,6 +384,12 @@ public class SignUpController3 implements Initializable {
         stageDragable(root,stage);
         stage.show();
     }
+    /**
+     * <h2>Enables Stage Drag</h2>
+     * <p>This method is responsible with dragging of window</p>
+     * @param root is Parent which is top level container
+     * @param stage is the window
+     */
     public static void stageDragable(Parent root, Stage stage){
 
         root.setOnMousePressed(mouseEvent -> {

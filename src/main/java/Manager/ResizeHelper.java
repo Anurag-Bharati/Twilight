@@ -11,6 +11,14 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+/**
+ * <h2>Transparent Stage Resize</h2>
+ * <p>This class is used to resize a transparent/undecorated stage</p>
+ * @author Alexander.Berg
+ * @author Ben
+ * @author Anurag-Bharati
+ */
+@SuppressWarnings("All")
 public class ResizeHelper {
     static boolean isScrollbar = false;
 
@@ -36,6 +44,7 @@ public class ResizeHelper {
         for (Node child : children) {
             if (child instanceof ScrollBar) {
                 isScrollbar = true;
+
             } else if (!(child instanceof ScrollBar)) {
                 isScrollbar = false;
                 addListenerDeeply(child, resizeListener);

@@ -5,6 +5,7 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.GaussianBlur?>
@@ -41,7 +42,7 @@
                               <AnchorPane fx:id="tempFx" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black; -fx-opacity: 30%;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <VBox prefHeight="374.0" prefWidth="400.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                                  <children>
-                                    <AnchorPane prefHeight="113.0" prefWidth="400.0">
+                                    <AnchorPane prefHeight="84.0" prefWidth="400.0">
                                        <children>
                                           <Label fx:id="city" alignment="CENTER" blendMode="ADD" cache="true" cacheHint="QUALITY" prefHeight="66.0" prefWidth="398.0" text="CITYNAME" textFill="WHITE" AnchorPane.topAnchor="10.0">
                                              <font>
@@ -55,11 +56,11 @@
                                           </Label>
                                        </children>
                                     </AnchorPane>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="110.0" prefHeight="150.0" prefWidth="0.0" spacing="20.0">
+                                    <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="110.0" prefHeight="186.0" prefWidth="400.0" spacing="20.0">
                                        <children>
-                                          <VBox alignment="TOP_CENTER" prefHeight="214.0" prefWidth="308.0">
+                                          <VBox alignment="TOP_CENTER" prefHeight="214.0" prefWidth="298.0">
                                              <children>
-                                                <ImageView fx:id="weatherIcon" cache="true" cacheHint="QUALITY" fitHeight="117.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="weatherIcon" cache="true" cacheHint="QUALITY" fitHeight="117.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true">
                                                    <viewport>
                                                       <Rectangle2D height="500.0" width="500.0" />
                                                    </viewport>
@@ -158,11 +159,10 @@
                                           </HBox>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="210.0" prefHeight="72.0" prefWidth="400.0" />
                                  </children>
                               </VBox>
                            </children></AnchorPane>
-                        <VBox layoutX="25.0" layoutY="25.0" prefHeight="344.4" prefWidth="250.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="426.0" AnchorPane.topAnchor="25.0">
+                        <VBox layoutX="25.0" layoutY="25.0" prefHeight="344.4" prefWidth="250.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="425.0" AnchorPane.topAnchor="25.0">
                            <children>
                               <AnchorPane onMouseClicked="#focusBackground" prefHeight="345.0" prefWidth="254.0">
                                  <children>
@@ -188,15 +188,32 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="searchBar" alignment="CENTER" focusTraversable="false" layoutX="50.0" layoutY="146.0" onKeyPressed="#enableSearch" onMouseEntered="#enableSearch" onMouseExited="#enableSearch" prefWidth="149.0" promptText="Your City Name Here" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white; -fx-text-inner-color: white;" AnchorPane.bottomAnchor="172.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="146.0">
+                                    <TextField fx:id="searchBar" alignment="CENTER" blendMode="ADD" focusTraversable="false" layoutX="50.0" layoutY="145.0" onKeyPressed="#enableSearch" onMouseEntered="#enableSearch" onMouseExited="#enableSearch" prefWidth="149.0" promptText="Your City Name Here" style="-fx-background-color: transparent; -fx-border-color: white; -fx-text-fill: white; -fx-text-inner-color: white;" AnchorPane.bottomAnchor="173.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="145.0">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </TextField>
-                                    <JFXButton fx:id="searchButton" disable="true" layoutX="79.0" layoutY="188.0" onAction="#onSearch" prefHeight="27.0" prefWidth="93.0" ripplerFill="#9bec89" style="-fx-background-color: #63c74d;" text="Search" textFill="WHITE" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="79.0" AnchorPane.topAnchor="188.0">
+                                    <JFXButton fx:id="searchButton" disable="true" layoutX="78.0" layoutY="190.0" onAction="#onSearch" prefHeight="27.0" prefWidth="93.0" ripplerFill="#9bec89" style="-fx-background-color: #63c74d;" text="Search" textFill="WHITE" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="190.0">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
+                                    </JFXButton>
+                                    <Label fx:id="errorField" alignment="CENTER" blendMode="ADD" layoutX="114.0" layoutY="233.0" prefHeight="102.0" prefWidth="244.0" textFill="#f77622" wrapText="true" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXButton fx:id="saveButton" layoutX="144.0" layoutY="190.0" onAction="#onSave" prefHeight="27.0" prefWidth="46.0" ripplerFill="#85f7ff" style="-fx-background-color: #2fb6c3;" text="Save" textFill="WHITE" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="153.0" AnchorPane.topAnchor="190.0">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Save this city for guest mode?">
+                                             <font>
+                                                <Font name="System Bold" size="8.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
                                     </JFXButton>
                                  </children>
                               </AnchorPane>
@@ -217,6 +234,9 @@
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
+                           <tooltip>
+                              <Tooltip text="Minimize" />
+                           </tooltip>
                         </JFXButton>
                         <JFXButton fx:id="EXIT" minHeight="0.0" minWidth="0.0" onAction="#eventHandler" prefHeight="15.0" prefWidth="26.0" ripplerFill="#ffafa4" style="-fx-background-color: #ED553B;" text=" " textAlignment="CENTER" textFill="WHITE">
                            <HBox.margin>
@@ -225,6 +245,9 @@
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
+                           <tooltip>
+                              <Tooltip text="Quit" />
+                           </tooltip>
                         </JFXButton>
                      </children>
                   </HBox>
@@ -304,6 +327,13 @@
                      <effect>
                         <DropShadow height="10.0" radius="4.5" width="10.0" />
                      </effect>
+                     <children>
+                        <Label alignment="CENTER" layoutX="196.0" layoutY="30.0" text="7-DAY weather forecast coming soon!" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="25.0">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
