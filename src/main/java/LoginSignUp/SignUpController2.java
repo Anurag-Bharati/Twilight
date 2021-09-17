@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -38,6 +39,8 @@ import java.util.ResourceBundle;
 /**
  *
  * @author Anurag Bharati
+ * @since 2021
+ * @version 1.0
  *
  */
 
@@ -81,10 +84,13 @@ public class SignUpController2 implements Initializable {
     private String familyName;
     private String password;
     private String confirmPass;
-    private String authCode;
     private String gmail;
     private String gmailOld;
     private Boolean sent = false;
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private String authCode;
+
     String authCodeSys = String.valueOf(MailVerify.OTP);
 
     int screenWidth = 400;
@@ -242,7 +248,7 @@ public class SignUpController2 implements Initializable {
         return false;
     }
 
-    private boolean checkPasswordStrength(String password) {
+    public boolean checkPasswordStrength(String password) {
 
         /* This is the password strength checker*/
 
@@ -305,9 +311,14 @@ public class SignUpController2 implements Initializable {
         stage.show();
 
     }
+    /**
+     * <h2>Guest Mode</h2>
+     * @throws IOException if path ain't right
+     */
     private void switchAsGuest() throws IOException {
         stage.close();
         Stage stage = new Stage();
+        stage.getIcons().add(new Image("/main/resources/twilight.png"));
         stage.initStyle(StageStyle.TRANSPARENT);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
         root = fxmlLoader.load();
@@ -319,6 +330,12 @@ public class SignUpController2 implements Initializable {
         stageDragable(root,stage);
         stage.show();
     }
+    /**
+     * <h2>Enables Stage Drag</h2>
+     * <p>This method is responsible with dragging of window</p>
+     * @param root is Parent which is top level container
+     * @param stage is the window
+     */
     public static void stageDragable(Parent root, Stage stage){
 
         root.setOnMousePressed(mouseEvent -> {

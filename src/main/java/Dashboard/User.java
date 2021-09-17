@@ -1,5 +1,10 @@
 package Dashboard;
 
+/**
+ * @author Anurag-Bharati
+ * @since 2021
+ * @version 1.0
+ */
 public class User {
 
     private String givenName, familyName, gmail, country, city, gmailOld, password,confirmPass, authCode;

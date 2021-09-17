@@ -1,7 +1,19 @@
 package Manager;
 
+/**
+ * <h2>Manages the icon</h2>
+ * <p>This class manages or provides the weather icon</p>
+ * @author Anurag-Bharati
+ * @since 2021
+ * @version 1.0
+ */
 public class IconManager {
-
+    /**
+     * <h2>Icon Provider</h2>
+     * <p>Provides icon relevant to its input</p>
+     * @param icon is the icon name in string provided by the API
+     * @return Path of the particular icon
+     */
     public static String getImage(String icon) {
         return switch (icon) {
             case "01d" -> "/main/resources/icons/01d.png";

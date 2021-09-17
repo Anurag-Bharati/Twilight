@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -39,6 +40,8 @@ import java.util.ResourceBundle;
 /**
  *
  * @author Anurag Bharati
+ * @since 2021
+ * @version 1.0
  *
  */
 
@@ -65,12 +68,16 @@ public class SignUpController implements Initializable {
     @FXML private TextField familyNameField;
     @FXML private TextField gmailField;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private String givenName;
+    @SuppressWarnings("FieldCanBeLocal")
     private String familyName;
+    @SuppressWarnings("FieldCanBeLocal")
+    private String gmail;
+
     private String password;
     private String confirmPass;
     private String authCode;
-    private String gmail;
     private String gmailOld;
     private Boolean sent = false;
 
@@ -140,10 +147,8 @@ public class SignUpController implements Initializable {
             switchToSignUpVer(actionEvent);
         }
         if (actionEvent.getSource().equals(guestMode)){
-            switchAsGuest(actionEvent);
+            switchAsGuest();
         }
-//      errorLabel.setText("Tip: You can login directly as a guest by clicking the guest button by the minimize
-//       button");
     }
     @FXML
     private void switchToSignUpVer(ActionEvent event) throws Exception {
@@ -179,15 +184,19 @@ public class SignUpController implements Initializable {
                     errorLabel.setTextFill(Color.web("#be4a2f"));
                 }
             }
-        } else {
-            errorLabel.setTextFill(Color.web("#f77622"));
-            errorLabel.setText("Please provide a gmail address");
         }
+
     }
     public boolean checkGmail(String gMail) {
 
         /*This function takes gmail as string and checks if the domain is gmail or not.
         If not it returns false and true if it is.*/
+
+        if (Objects.requireNonNull(gmailField.getText().strip()).length() <= 2) {
+            errorLabel.setText("Please, provide a gmail address");
+            errorLabel.setTextFill(Color.web("#f77622"));
+            return false;
+        }
 
         StringBuilder checkDomain = new StringBuilder();
 
@@ -205,6 +214,8 @@ public class SignUpController implements Initializable {
 
             }
         }
+        errorLabel.setText("Please, provide a valid gmail address");
+        errorLabel.setTextFill(Color.web("#f77622"));
         return false;
     }
     private boolean sendIt(String name,String mail) throws Exception {
@@ -250,10 +261,6 @@ public class SignUpController implements Initializable {
             errorLabel.setTextFill(Color.web("#f77622"));
             return false;
 
-        }else if (Objects.requireNonNull(gmailField.getText()).length() <= 10) {
-            errorLabel.setText("Please, provide a valid gmail address");
-            errorLabel.setTextFill(Color.web("#f77622"));
-            return false;
         } else if (!errorLabel.getText().equals(
                 "All the requirements have been satisfied. Press Confirm to proceed.")){
             errorLabel.setText("All the requirements have been satisfied. Press Confirm to proceed.");
@@ -285,14 +292,18 @@ public class SignUpController implements Initializable {
         familyNameField.setText(familyName);
         gmailField.setText(gmail);
     }
-    private void switchAsGuest(ActionEvent actionEvent) throws IOException {
-//        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+    /**
+     * <h2>Guest Mode</h2>
+     * @throws IOException if path ain't right
+     */
+    private void switchAsGuest() throws IOException {
+
         stage.close();
         Stage stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
+        stage.getIcons().add(new Image("/main/resources/twilight.png"));
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
-//        root = FXMLLoader.load(Objects.requireNonNull(
-//                getClass().getClassLoader().getResource("main/resources/dashboard/Dashboard.fxml")));
+
         root = fxmlLoader.load();
         scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
@@ -303,6 +314,12 @@ public class SignUpController implements Initializable {
         stage.show();
 
     }
+    /**
+     * <h2>Enables Stage Drag</h2>
+     * <p>This method is responsible with dragging of window</p>
+     * @param root is Parent which is top level container
+     * @param stage is the window
+     */
     public static void stageDragable(Parent root, Stage stage){
 
         root.setOnMousePressed(mouseEvent -> {

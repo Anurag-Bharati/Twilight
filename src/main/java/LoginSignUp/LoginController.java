@@ -3,6 +3,7 @@ package LoginSignUp;
 import Dashboard.DashboardController;
 import Dashboard.User;
 import Manager.DatabaseManager;
+import Manager.FileIO;
 import Manager.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -42,6 +44,8 @@ import java.util.ResourceBundle;
 /**
  *
  * @author Anurag Bharati
+ * @since 2021
+ * @version 1.0
  *
  */
 
@@ -51,7 +55,7 @@ public class LoginController implements Initializable {
     protected Stage stage;
     protected Scene scene;
     public Parent root;
-    private final DatabaseManager databaseManager = new DatabaseManager();;
+    private final DatabaseManager databaseManager = new DatabaseManager();
 
     @FXML protected AnchorPane rootStage;
     @FXML private AnchorPane rootFx;
@@ -68,8 +72,6 @@ public class LoginController implements Initializable {
 
     @FXML private TextField gmailField;
     @FXML private PasswordField passField;
-
-    private String givenName, familyName, gmail, country, city;
 
     int screenWidth = 400;
     Random random = new Random();
@@ -98,6 +100,13 @@ public class LoginController implements Initializable {
         walk.setOnFinished(t -> Raining(r));
         walk.play();
     }
+
+    /**
+     * <h2>Event Handler</h2>
+     * <p>Responsible for many events handling</p>
+     * @param actionEvent is event related to Button
+     * @throws Exception if anything went wrong XD
+     */
     @FXML
     private void onAction(ActionEvent actionEvent) throws Exception {
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -140,16 +149,21 @@ public class LoginController implements Initializable {
             switchAsGuest(actionEvent);
         }
         if (actionEvent.getSource().equals(register)){
-            switchToSignUp(actionEvent);
+            switchToSignUp();
         }
     }
+
+    /**
+     * <h2>Switch to Registration</h2>
+     * <p>This method is responsible for switching scene to registration</p>
+     * @throws IOException if file not found
+     */
     @FXML
-    private void switchToSignUp(ActionEvent event) throws Exception {
+    private void switchToSignUp() throws IOException {
         errorLabel.setTextFill(Color.WHITE);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
                 "/main/resources/LoginSignUp/LoginSignUp1.fxml"));
         root = fxmlLoader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setMaximized(false);
         scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
@@ -158,10 +172,14 @@ public class LoginController implements Initializable {
         stage.show();
 
     }
-    public boolean checkGmail(String gMail) {
 
-        /*This function takes gmail as string and checks if the domain is gmail or not.
-        If not it returns false and true if it is.*/
+    /**
+     * <h2>Is Gmail?</h2>
+     * <p>This method checks if the provided email domain is gmail or not</p>
+     * @param gMail is gmail address provided in string
+     * @return boolean, True if gmail is provided and false if not.
+     */
+    public boolean checkGmail(String gMail) {
 
         StringBuilder checkDomain = new StringBuilder();
 
@@ -181,9 +199,15 @@ public class LoginController implements Initializable {
         }
         return false;
     }
+
+    /**
+     * <h2>Basic Check</h2>
+     * <p>Checks for null or invalid data provided while logging in</p>
+     * @return boolean
+     */
     public boolean checkFields() {
 
-        /*This method check for data validity made totally by anurag :) at 12AM 8/27/2021 */
+
         if (Objects.requireNonNull(gmailField.getText()).length() <= 10) {
             errorLabel.setText("Please, provide a valid gmail address");
             errorLabel.setTextFill(Color.web("#f77622"));
@@ -199,24 +223,42 @@ public class LoginController implements Initializable {
         } else return true;
     }
 
+    /**
+     * <h2>Guest Mode</h2>
+     * @param actionEvent is Event related with button
+     * @throws IOException if path ain't right
+     */
     private void switchAsGuest(ActionEvent actionEvent) throws IOException {
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
         Stage stage = new Stage();
+        stage.getIcons().add(new Image("/main/resources/twilight.png"));
         stage.initStyle(StageStyle.TRANSPARENT);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
-
         root = fxmlLoader.load();
         scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         DashboardController dashboardController =  fxmlLoader.getController();
-        dashboardController.name.setText("GUEST");
         stage.setScene(scene);
+        dashboardController.name.setText("GUEST");
+
+        FileIO fileIO = new FileIO();
+        dashboardController.fetchGuest(fileIO.read());
+        fileIO.close();
+
         stageDragable(root,stage);
         stage.show();
 
     }
 
+
+    /**
+     * <h2>LogIn</h2>
+     * <p>This method is responsible for login and switching to dashboard</p>
+     * @param actionEvent is event related with button
+     * @throws SQLException if sth is wrong w/ database
+     * @throws IOException if file not found
+     */
     private void login(ActionEvent actionEvent) throws SQLException, IOException{
         User user;
         if (checkPass()) {
@@ -225,6 +267,7 @@ public class LoginController implements Initializable {
                 stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                 stage.close();
                 Stage stage = new Stage();
+                stage.getIcons().add(new Image("/main/resources/twilight.png"));
                 stage.initStyle(StageStyle.TRANSPARENT);
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
 
@@ -243,6 +286,13 @@ public class LoginController implements Initializable {
         }
 
     }
+
+    /**
+     * <h2>Checks For Credential Match</h2>
+     * <p>This method is responsible for the actual login</p>
+     * @return boolean, True if check pass and False if not.
+     * @throws SQLException if sth is wrong w/ database
+     */
     private boolean checkPass() throws SQLException {
         Connection connection = databaseManager.connect();
 
@@ -294,6 +344,13 @@ public class LoginController implements Initializable {
         databaseManager.disconnect();
         return false;
     }
+
+    /**
+     * <h2>Fetch User Data</h2>
+     * <p>This method fetches user data before switching stage</p>
+     * @return User instance which contains all the user details
+     * @throws SQLException if sth is wrong w/ database
+     */
     private User fetchUser() throws SQLException {
         User user = new User();
         Connection connection = databaseManager.connect();
@@ -323,6 +380,12 @@ public class LoginController implements Initializable {
 
     }
 
+    /**
+     * <h2>Enables Stage Drag</h2>
+     * <p>This method is responsible with dragging of window</p>
+     * @param root is Parent which is top level container
+     * @param stage is the window
+     */
     public static void stageDragable(Parent root, Stage stage){
 
         root.setOnMousePressed(mouseEvent -> {
