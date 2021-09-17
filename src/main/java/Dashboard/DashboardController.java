@@ -43,7 +43,6 @@ public class DashboardController implements Initializable {
     WeatherManager weatherManager;
     User user;
     public String CITY;
-    FileIO fileIO = new FileIO();
 
     // FXML CONTAINERS
     @FXML private AnchorPane rootStage;
@@ -57,7 +56,6 @@ public class DashboardController implements Initializable {
     @FXML private JFXButton EXIT;
     @FXML private JFXButton searchButton;
     @FXML private JFXButton saveButton;
-
 
     @FXML public Label name;
     @FXML private Label time;
@@ -99,8 +97,9 @@ public class DashboardController implements Initializable {
 
     Image[] images;
     Random random = new Random();   // Making obj of Random
+    FileIO fileIO = new FileIO();
 
-    Timer timer = new Timer();// This is a timer, used to time things.
+    Timer timer = new Timer(); // This is a timer, used to time things.
     TimerTask task = new TimerTask() { // This is where the task is
         @Override
         public void run() {
@@ -337,8 +336,8 @@ public class DashboardController implements Initializable {
                     });
                 }
             };
-            timer.scheduleAtFixedRate(task, 0, 3_600_000);
-            // Updates Automatically after 1 hour which is 3.6e+6 ms.
+            timer.scheduleAtFixedRate(task, 0, 1_800_000);
+            // Updates Automatically after 30 min which is 1.8e+6 ms.
         } else errorField.setText("Weather of "+CITY+" is already updated");
     }
     /**
