@@ -1,4 +1,4 @@
-package Manager;
+package Model;
 
 import com.sun.mail.smtp.SMTPAddressFailedException;
 

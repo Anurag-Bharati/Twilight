@@ -1,8 +1,8 @@
 package main.test;
 
 
-import Dashboard.User;
-import Manager.DatabaseManager;
+import Controller.Dashboard.User;
+import Model.DatabaseManager;
 import org.junit.Test;
 
 import java.sql.Connection;

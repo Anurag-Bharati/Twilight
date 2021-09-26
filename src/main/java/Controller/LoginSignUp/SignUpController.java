@@ -1,10 +1,10 @@
-package LoginSignUp;
+package Controller.LoginSignUp;
 
-import Dashboard.DashboardController;
-import Dashboard.User;
-import Manager.FileIO;
-import Manager.MailVerify;
-import Manager.ResizeHelper;
+import Controller.Dashboard.DashboardController;
+import Controller.Dashboard.User;
+import Model.FileIO;
+import Model.MailVerify;
+import Model.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import com.sun.mail.util.MailConnectException;
 import javafx.animation.FadeTransition;
@@ -169,7 +169,7 @@ public class SignUpController implements Initializable {
                 user.setCity(city);
                 if (sendIt(user.getGivenName(), user.getGmail().strip().toLowerCase(Locale.ROOT))) {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                            "/main/resources/LoginSignUp/LoginSignUp2.fxml"));
+                            "/main/resources/View/LoginSignUp/LoginSignUp2.fxml"));
                     root = fxmlLoader.load();
                     SignUpController2 signUpController2 = fxmlLoader.getController();
                     signUpController2.initUser(user);
@@ -303,7 +303,7 @@ public class SignUpController implements Initializable {
         Stage stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.getIcons().add(new Image("/main/resources/twilight.png"));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/View/dashboard/Dashboard.fxml"));
 
         root = fxmlLoader.load();
         scene = new Scene(root);

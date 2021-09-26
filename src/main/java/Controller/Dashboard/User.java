@@ -1,4 +1,4 @@
-package Dashboard;
+package Controller.Dashboard;
 
 /**
  * @author Anurag-Bharati

@@ -1,10 +1,10 @@
-package LoginSignUp;
+package Controller.LoginSignUp;
 
-import Dashboard.DashboardController;
-import Dashboard.User;
-import Manager.DatabaseManager;
-import Manager.FileIO;
-import Manager.ResizeHelper;
+import Controller.Dashboard.DashboardController;
+import Controller.Dashboard.User;
+import Model.DatabaseManager;
+import Model.FileIO;
+import Model.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -188,7 +188,7 @@ public class LoginController implements Initializable {
     private void switchToSignUp() throws IOException {
         errorLabel.setTextFill(Color.WHITE);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/main/resources/LoginSignUp/LoginSignUp1.fxml"));
+                "/main/resources/View/LoginSignUp/LoginSignUp1.fxml"));
         root = fxmlLoader.load();
         stage.setMaximized(false);
         scene = new Scene(root);
@@ -260,7 +260,7 @@ public class LoginController implements Initializable {
         Stage stage = new Stage();
         stage.getIcons().add(new Image("/main/resources/twilight.png"));
         stage.initStyle(StageStyle.TRANSPARENT);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/View/dashboard/Dashboard.fxml"));
         root = fxmlLoader.load();
         scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
@@ -295,7 +295,7 @@ public class LoginController implements Initializable {
                 Stage stage = new Stage();
                 stage.getIcons().add(new Image("/main/resources/twilight.png"));
                 stage.initStyle(StageStyle.TRANSPARENT);
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/View/dashboard/Dashboard.fxml"));
 
                 root = fxmlLoader.load();
                 scene = new Scene(root);

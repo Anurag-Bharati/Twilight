@@ -1,4 +1,4 @@
-package Manager;
+package Model;
 
 import java.io.*;
 

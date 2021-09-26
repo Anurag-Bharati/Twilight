@@ -1,9 +1,9 @@
-package Dashboard;
+package Controller.Dashboard;
 
 
-import Manager.FileIO;
-import Manager.IconManager;
-import Manager.WeatherManager;
+import Model.FileIO;
+import Model.IconManager;
+import Model.WeatherManager;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -43,6 +43,32 @@ public class DashboardController implements Initializable {
     WeatherManager weatherManager;
     User user;
     public String CITY;
+
+    // For Animation
+    static ScaleTransition scaleTransition1;
+    static ScaleTransition scaleTransition2;
+    static ScaleTransition scaleTransition3;
+    static ScaleTransition scaleTransition4;
+    static ScaleTransition scaleTransition5;
+
+    static FadeTransition fadeTransition1;
+    static FadeTransition fadeTransition2;
+    static FadeTransition fadeTransition3;
+    static FadeTransition fadeTransition4;
+    static FadeTransition fadeTransition5;
+
+    static ParallelTransition parallelTransition1;
+    static ParallelTransition parallelTransition2;
+    static ParallelTransition parallelTransition3;
+    static ParallelTransition parallelTransition4;
+    static ParallelTransition parallelTransition5;
+
+    static SequentialTransition sequentialTransition;
+    static SequentialTransition sequentialTransition1;
+
+    static ParallelTransition parallelTransitionSeq;
+    static SequentialTransition transition;
+
 
     // FXML CONTAINERS
     @FXML private AnchorPane rootStage;
@@ -371,16 +397,16 @@ public class DashboardController implements Initializable {
      */
     private void animateCircles() {
 
-        ScaleTransition scaleTransition1 = new ScaleTransition(Duration.seconds(.4), circle1);
-        ScaleTransition scaleTransition2 = new ScaleTransition(Duration.seconds(.3), circle2);
-        ScaleTransition scaleTransition3 = new ScaleTransition(Duration.seconds(.6), circle3);
-        ScaleTransition scaleTransition4 = new ScaleTransition(Duration.seconds(.3), circle4);
-        ScaleTransition scaleTransition5 = new ScaleTransition(Duration.seconds(.4), circle5);
-        FadeTransition fadeTransition1 = new FadeTransition(Duration.seconds(.4), circle1);
-        FadeTransition fadeTransition2 = new FadeTransition(Duration.seconds(.3), circle2);
-        FadeTransition fadeTransition3 = new FadeTransition(Duration.seconds(.6), circle3);
-        FadeTransition fadeTransition4 = new FadeTransition(Duration.seconds(.3), circle4);
-        FadeTransition fadeTransition5 = new FadeTransition(Duration.seconds(.4), circle5);
+        scaleTransition1 = new ScaleTransition(Duration.seconds(.4), circle1);
+        scaleTransition2 = new ScaleTransition(Duration.seconds(.3), circle2);
+        scaleTransition3 = new ScaleTransition(Duration.seconds(.6), circle3);
+        scaleTransition4 = new ScaleTransition(Duration.seconds(.3), circle4);
+        scaleTransition5 = new ScaleTransition(Duration.seconds(.4), circle5);
+        fadeTransition1 = new FadeTransition(Duration.seconds(.4), circle1);
+        fadeTransition2 = new FadeTransition(Duration.seconds(.3), circle2);
+        fadeTransition3 = new FadeTransition(Duration.seconds(.6), circle3);
+        fadeTransition4 = new FadeTransition(Duration.seconds(.3), circle4);
+        fadeTransition5 = new FadeTransition(Duration.seconds(.4), circle5);
 
         fadeTransition1.setFromValue(1);
         fadeTransition1.setToValue(0);
@@ -407,11 +433,11 @@ public class DashboardController implements Initializable {
         scaleTransition5.setByX(.25);
         scaleTransition5.setByY(.25);
 
-        ParallelTransition parallelTransition1 = new ParallelTransition(scaleTransition1, fadeTransition1);
-        ParallelTransition parallelTransition2 = new ParallelTransition(scaleTransition2, fadeTransition2);
-        ParallelTransition parallelTransition3 = new ParallelTransition(scaleTransition3, fadeTransition3);
-        ParallelTransition parallelTransition4 = new ParallelTransition(scaleTransition4, fadeTransition4);
-        ParallelTransition parallelTransition5 = new ParallelTransition(scaleTransition5, fadeTransition5);
+        parallelTransition1 = new ParallelTransition(scaleTransition1, fadeTransition1);
+        parallelTransition2 = new ParallelTransition(scaleTransition2, fadeTransition2);
+        parallelTransition3 = new ParallelTransition(scaleTransition3, fadeTransition3);
+        parallelTransition4 = new ParallelTransition(scaleTransition4, fadeTransition4);
+        parallelTransition5 = new ParallelTransition(scaleTransition5, fadeTransition5);
 
         parallelTransition1.setAutoReverse(true);
         parallelTransition2.setAutoReverse(true);
@@ -420,16 +446,16 @@ public class DashboardController implements Initializable {
         parallelTransition5.setAutoReverse(true);
 
 
-        SequentialTransition sequentialTransition = new SequentialTransition();
+        sequentialTransition = new SequentialTransition();
         sequentialTransition.getChildren().addAll(parallelTransition1, parallelTransition2);
 
 
-        SequentialTransition sequentialTransition1 = new SequentialTransition();
+        sequentialTransition1 = new SequentialTransition();
         sequentialTransition1.getChildren().addAll(parallelTransition5, parallelTransition4);
 
-        ParallelTransition parallelTransitionSeq = new ParallelTransition(sequentialTransition, sequentialTransition1);
+        parallelTransitionSeq = new ParallelTransition(sequentialTransition, sequentialTransition1);
 
-        SequentialTransition transition = new SequentialTransition(parallelTransitionSeq, parallelTransition3);
+        transition = new SequentialTransition(parallelTransitionSeq, parallelTransition3);
 
         transition.setInterpolator(Interpolator.EASE_BOTH);
         transition.setAutoReverse(true);

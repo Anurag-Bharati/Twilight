@@ -1,7 +1,7 @@
 package main.test;
 
-import LoginSignUp.LoginController;
-import LoginSignUp.SignUpController2;
+import Controller.LoginSignUp.LoginController;
+import Controller.LoginSignUp.SignUpController2;
 import org.junit.Before;
 import org.junit.Test;
 

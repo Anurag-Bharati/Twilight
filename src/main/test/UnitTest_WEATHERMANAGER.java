@@ -1,6 +1,6 @@
 package main.test;
 
-import Manager.WeatherManager;
+import Model.WeatherManager;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +33,7 @@ public class UnitTest_WEATHERMANAGER {
         weatherManager.getWeather();
     }
 
-    /**
-     * <h2>Country Check</h2>
-     * <p>Accuracy test. Based on the city provided,
-     * this test check if requested city corresponds to its country or not
-     * </p>
-     */
+
     @Test
     public void checkCountry(){
 
@@ -48,10 +43,7 @@ public class UnitTest_WEATHERMANAGER {
         assertEquals(country,weatherManager.getCountry());
     }
 
-    /**
-     * <h2>City Temp Check</h2>
-     * <p>This checks if the temp of requested city is correct or not</p>
-     */
+
     @Test
     public void checkTemp(){
 

@@ -1,4 +1,4 @@
-package Manager;
+package Model;
 
 /**
  * <h2>Manages the icon</h2>

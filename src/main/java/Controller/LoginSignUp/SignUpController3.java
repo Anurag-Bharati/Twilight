@@ -1,10 +1,10 @@
-package LoginSignUp;
+package Controller.LoginSignUp;
 
-import Dashboard.DashboardController;
-import Dashboard.User;
-import Manager.DatabaseManager;
-import Manager.FileIO;
-import Manager.ResizeHelper;
+import Controller.Dashboard.DashboardController;
+import Controller.Dashboard.User;
+import Model.DatabaseManager;
+import Model.FileIO;
+import Model.ResizeHelper;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -191,7 +191,7 @@ public class SignUpController3 implements Initializable {
             user.setCity(cityField.getText());
         }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp4.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/View/LoginSignUp/LoginSignUp4.fxml"));
         root = fxmlLoader.load();
 
         SignUpController4 signUpController4 = fxmlLoader.getController();
@@ -242,7 +242,7 @@ public class SignUpController3 implements Initializable {
         user.setCountry(countryField.getText());
         user.setCity(cityField.getText());
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp2.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/View/LoginSignUp/LoginSignUp2.fxml"));
         root = fxmlLoader.load();
 
         SignUpController2 signUpController2 = fxmlLoader.getController();
@@ -308,7 +308,7 @@ public class SignUpController3 implements Initializable {
                 errorLabel.setText("User Added Successfully! Now Redirecting...");
                 errorLabel.setTextFill(Color.web("#3e8948"));
                 fadeTransition.setOnFinished(e->{
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/LoginSignUp/LoginSignUp0.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/View/LoginSignUp/LoginSignUp0.fxml"));
                     try {
                         root = fxmlLoader.load();
                     } catch (IOException ex) {
@@ -375,7 +375,7 @@ public class SignUpController3 implements Initializable {
         Stage stage = new Stage();
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.getIcons().add(new Image("/main/resources/twilight.png"));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/dashboard/Dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main/resources/View/dashboard/Dashboard.fxml"));
         root = fxmlLoader.load();
         scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);

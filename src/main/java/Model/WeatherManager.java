@@ -1,4 +1,4 @@
-package Manager;
+package Model;
 
 import org.json.JSONException;
 import org.json.JSONObject;

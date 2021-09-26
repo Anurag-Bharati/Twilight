@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootStage" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Dashboard.DashboardController">
+<AnchorPane fx:id="rootStage" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Dashboard.DashboardController">
    <children>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="700.0" style="-fx-background-color: transparent; -fx-background-radius: 1em;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
          <children>
@@ -65,7 +65,7 @@
                                                       <Rectangle2D height="500.0" width="500.0" />
                                                    </viewport>
                                                    <image>
-                                                      <Image url="@../icons/11.png" />
+                                                      <Image url="@../../icons/11.png" />
                                                    </image>
                                                    <effect>
                                                       <DropShadow height="10.0" radius="4.5" width="10.0">
@@ -99,7 +99,7 @@
                                                             <Rectangle2D height="64.0" width="64.0" />
                                                          </viewport>
                                                          <image>
-                                                            <Image url="@../icons/cloudiness.png" />
+                                                            <Image url="@../../icons/cloudiness.png" />
                                                          </image>
                                                       </ImageView>
                                                       <ImageView cache="true" cacheHint="SCALE" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
@@ -107,7 +107,7 @@
                                                             <Rectangle2D height="64.0" width="64.0" />
                                                          </viewport>
                                                          <image>
-                                                            <Image url="@../icons/windspeed.png" />
+                                                            <Image url="@../../icons/windspeed.png" />
                                                          </image>
                                                       </ImageView>
                                                       <ImageView cache="true" cacheHint="SCALE" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
@@ -115,7 +115,7 @@
                                                             <Rectangle2D height="64.0" width="64.0" />
                                                          </viewport>
                                                          <image>
-                                                            <Image url="@../icons/pressure.png" />
+                                                            <Image url="@../../icons/pressure.png" />
                                                          </image>
                                                       </ImageView>
                                                       <ImageView cache="true" cacheHint="SCALE" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
@@ -123,7 +123,7 @@
                                                             <Rectangle2D height="64.0" width="64.0" />
                                                          </viewport>
                                                          <image>
-                                                            <Image url="@../icons/humidity.png" />
+                                                            <Image url="@../../icons/humidity.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>

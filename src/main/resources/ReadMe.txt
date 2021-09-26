@@ -6,4 +6,4 @@ Here is the image format:
 Image Size: Any size that have 16:9 pixel ratio.
 Image format: .jpg
 
-To add or delete the image you must change the array size first @Dashboard.java
+To add or delete the image you must change the array size first @Controller.Dashboard.java

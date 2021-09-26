@@ -7,13 +7,14 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginSignUp.LoginController">
+<AnchorPane fx:id="rootStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginSignUp.LoginController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #25242a;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -42,34 +43,50 @@
                      <font>
                         <Font name="System Bold" size="9.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Quit" />
+                     </tooltip>
                   </JFXButton>
                   <JFXButton fx:id="Expand" layoutX="229.0" layoutY="5.0" onAction="#onAction" prefHeight="30.0" prefWidth="30.0" ripplerFill="#ff9980" text="II" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="9.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Maximize" />
+                     </tooltip>
                   </JFXButton>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="8.0">
                      <viewport>
                         <Rectangle2D height="64.0" width="64.0" />
                      </viewport>
                      <image>
-                        <Image url="@../twilight.png" />
+                        <Image url="@../../twilight.png" />
                      </image>
                   </ImageView>
                   <JFXButton fx:id="Minimize" layoutX="199.0" layoutY="5.0" onAction="#onAction" prefHeight="30.0" prefWidth="30.0" ripplerFill="#ffd980" text="I" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="9.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Minimize" />
+                     </tooltip>
                   </JFXButton>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="98.0" AnchorPane.topAnchor="8.0">
                      <image>
-                        <Image url="@../anonUser.png" />
+                        <Image url="@../../anonUser.png" />
                      </image>
                   </ImageView>
                   <JFXButton fx:id="guestMode" alignment="CENTER" layoutX="276.0" layoutY="7.0" onAction="#onAction" prefHeight="30.0" prefWidth="30.0" ripplerFill="#82f5ff" text=" " textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="9.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Login as Guest">
+                           <font>
+                              <Font size="8.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip>
                   </JFXButton>
                </children>
             </AnchorPane>
@@ -145,6 +162,9 @@
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
+                                 <tooltip>
+                                    <Tooltip text="Delete this user?" />
+                                 </tooltip>
                               </JFXButton>
                            </children>
                         </HBox>

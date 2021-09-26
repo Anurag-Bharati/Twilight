@@ -1,4 +1,4 @@
-import Manager.ResizeHelper;
+import Model.ResizeHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,8 +26,8 @@ public class Main extends Application{
     Parent root;
 
     @SuppressWarnings("unused")
-    String dashboard = "main/resources/dashboard/Dashboard.fxml";
-    String ignite = "main/resources/LoginSignUp/LoginSignUp0.fxml";
+    String dashboard = "main/resources/View/dashboard/Dashboard.fxml";
+    String ignite = "main/resources/View/LoginSignUp/LoginSignUp0.fxml";
 
     @Override
     public void start(Stage stage){
