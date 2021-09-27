@@ -8,10 +8,13 @@
 <div align="center">
 
 [![Contributors][contributors-shield]][contributors-url]
-[![Commit][commit-shield]][commit-url]
+[![License][license-shield]][license-url]
+[![Downloads][download-shield]][download-url]
 [![Forks][forks-shield]][forks-url]
 [![size][size-shield]][size-url]
+[![LastCommit][lastCommit-shield]][size-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+[![Facebook][facebook-shield]][facebook-url]
 </div>
 
 
@@ -45,7 +48,7 @@
 <!-- TABLE OF CONTENTS -->
 
 <details open="open">
-  <summary>Table of Contents</summary>
+  <summary><h2>Table of Contents</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -120,11 +123,13 @@ Here are the things you need to install to run this project:
 ### Installation
 
 1. Install all the requirements mentioned above
-2. Clone the repo
+2. [Get OpenWeatherAPI key](https://openweathermap.org/price)
+3. Clone the repo
    ```sh
    git clone https://github.com/Anurag-Bharati/Twilight.git
    ```
 3. Extract the zip file and run Main.java in IntelliJ IDEA.
+4. Fill up the details inside [PersonalDataField.java](https://github.com/Anurag-Bharati/Twilight/blob/main/src/main/java/Model/PersonalDataField.java)
 
 
 <!-- USAGE EXAMPLES -->
@@ -139,23 +144,29 @@ For more examples, please refer to the [Documentation] - Coming soon!
 <!-- CONTACT -->
 ## Contact
 
-Anurag Bharati - [Facebook](https://www.facebook.com/frost.king.1042)
+[![Facebook][facebook-shield]][facebook-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-Project Link: [Public](https://github.com/Anurag-Bharati/Twilight)
 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[commit-shield]: https://img.shields.io/github/commit-activity/m/Anurag-Bharati/Twilight?style=for-the-badge
-[commit-url]:https://github.com/Anurag-Bharati/Twilight/network
+[download-shield]: https://img.shields.io/github/downloads/anurag-bharati/Twilight/1.0/total?style=for-the-badge
+[download-url]:https://github.com/Anurag-Bharati/Twilight/releases/tag/1.0
+[license-shield]:https://img.shields.io/github/license/Anurag-Bharati/Twilight?style=for-the-badge
+[license-url]:https://github.com/Anurag-Bharati/Twilight/blob/main/LICENSE
 [contributors-shield]:https://img.shields.io/github/contributors/Anurag-Bharati/Twilight?style=for-the-badge
 [contributors-url]: https://github.com/Anurag-Bharati/Twilight/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Anurag-Bharati/Twilight?style=for-the-badge
 [forks-url]: https://github.com/Anurag-Bharati/Twilight/network/members
-[size-shield]: https://img.shields.io/github/languages/code-size/Anurag-Bharati/Twilight?style=for-the-badge
+[size-shield]:https://img.shields.io/github/repo-size/anurag-bharati/Twilight?style=for-the-badge
 [size-url]: https://github.com/Anurag-Bharati/Twilight
+[lastCommit-shield]:https://img.shields.io/github/last-commit/anurag-bharati/Twilight?style=for-the-badge
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/anurag-bharati-5abb6820a/
+[facebook-shield]:https://img.shields.io/badge/Facebook-Anurag-blue?style=for-the-badge
+[facebook-url]:https://www.facebook.com/frost.king.1042
+
 [product-screenshot]:https://github.com/Anurag-Bharati/Twilight/blob/main/src/main/resources/Demo.gif
 [tools-used]:https://github.com/Anurag-Bharati/Twilight/blob/main/src/main/resources/ToolsUsed.gif
