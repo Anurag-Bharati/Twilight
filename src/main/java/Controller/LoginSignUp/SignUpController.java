@@ -198,20 +198,25 @@ public class SignUpController implements Initializable {
             errorLabel.setTextFill(Color.web("#f77622"));
             return false;
         }
+        if (gmailField.getText().strip().equals("@gmail.com")) {
+            errorLabel.setText("@gmail.com is not a full gmail address");
+            errorLabel.setTextFill(Color.web("#f77622"));
+            return false;
+        }
 
         StringBuilder checkDomain = new StringBuilder();
 
-        for (int i = 0; i < gMail.length(); i++) {
-            char letter = gMail.charAt(i);
-            if (letter == '@') {
-                for (int j = i; j < gMail.length(); j++) {
-                    if (gMail.charAt(j) != ' ') {
-                        checkDomain.append(gMail.charAt(j));
-                    } else j++;
-                    if (checkDomain.toString().equals("@gmail.com")) {
-                        return true;
+            for (int i = 0; i < gMail.length(); i++) {
+                char letter = gMail.charAt(i);
+                if (letter == '@') {
+                    for (int j = i; j < gMail.length(); j++) {
+                        if (gMail.charAt(j) != ' ') {
+                            checkDomain.append(gMail.charAt(j));
+                        } else j++;
+                        if (checkDomain.toString().equals("@gmail.com")) {
+                            return true;
+                        }
                     }
-                }
 
             }
         }
@@ -241,10 +246,9 @@ public class SignUpController implements Initializable {
         }
         return true;
     }
-    public boolean checkFields() {
+    protected boolean checkFields() {
 
         /*This method check for data validity made totally by anurag :) at 12AM 8/27/2021 */
-
         if (Objects.requireNonNull(givenNameField.getText()).length() < 3) {
             errorLabel.setText("Given Name must be at least 3 characters long");
             errorLabel.setTextFill(Color.web("#f77622"));
