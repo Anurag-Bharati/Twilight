@@ -155,7 +155,7 @@ For more examples, please refer to the [Documentation] - Coming soon!
 [download-shield]: https://img.shields.io/github/downloads/anurag-bharati/Twilight/1.0/total?style=for-the-badge
 [download-url]:https://github.com/Anurag-Bharati/Twilight/releases/tag/1.0
 [license-shield]:https://img.shields.io/github/license/Anurag-Bharati/twilight?style=for-the-badge
-[license-url]:https://github.com/Anurag-Bharati/Twilight/blob/main/LICENSE
+[license-url]:https://github.com/Anurag-Bharati/Twilight/blob/main/LICENSE.md
 [contributors-shield]:https://img.shields.io/github/contributors/Anurag-Bharati/Twilight?style=for-the-badge
 [contributors-url]: https://github.com/Anurag-Bharati/Twilight/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Anurag-Bharati/Twilight?style=for-the-badge
